@@ -43,11 +43,6 @@ class Catalog
      */
     private $name;
 
-    
-    
-    
-    
-    
      /**
      * Constructor
      */
@@ -122,9 +117,9 @@ class Catalog
         return $this->products;
     }
     
-     public function setProduct(ArrayCollection $product)
+     public function setProducts(ArrayCollection $product)
     {
-        $this->products = $products;
+        $this->products = $product;
     }
 
     /**
@@ -163,10 +158,10 @@ class Catalog
     /**
      * Set country
      *
-     * @param \App\ECommerceBundle\Entity\Country $country
+     * @param \App\LanguageBundle\Entity\Country $country
      * @return Catalog
      */
-    public function setCountry(\App\ECommerceBundle\Entity\Country $country = null)
+    public function setCountry(\App\LanguageBundle\Entity\Country $country = null)
     {
         $this->country = $country;
 

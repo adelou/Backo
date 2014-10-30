@@ -101,11 +101,8 @@ class Media extends AbstractDefault
             return;
         }
         //si erreur, la donnée ne persiste pas en BDD
-        try {
-            $this->file->move($this->getUploadRootDir(), $this->path);
-        } catch (Exception $e) {
-            //var_dump($e->getMessage());die;
-        }
+
+        $this->file->move($this->getUploadRootDir(), $this->path);
 
         unset($this->file);
 

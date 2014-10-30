@@ -3,7 +3,7 @@ namespace App\AdminBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LanguageService
+class AdmineService
 {
     /*
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
@@ -15,13 +15,7 @@ class LanguageService
         $this->_container = $container;
     }
 
-    public function getCurrent() {
-        
-        $lang = $this->_container->get('request')->query->get('lang','');
-        if(empty($lang)) {
-            $lang = $this->_container->getParameter('locale');
-        }
+    public function getDatatableJson() {
 
-        return $lang;
     }
 }

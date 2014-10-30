@@ -13,8 +13,8 @@ services:
         tags:
             - { name: twig.extension }
 
-    app.adminbundle.services.language:
-            class: App\AdminBundle\Services\LanguageService
+    app.adminbundle.services.admin:
+            class: App\AdminBundle\Services\AdminService
             arguments:
               - "@service_container"
     app.adminbundle.services.mailer:
