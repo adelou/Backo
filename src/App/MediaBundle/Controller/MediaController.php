@@ -328,7 +328,7 @@ class MediaController extends Controller
         $jpeg_quality = 100;
 
         $filesystem = new Filesystem();
-        if($filesystem->exists( $this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug) == false) {
+        if($filesystem->exists( $this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug) === false) {
             try {
                 $filesystem->mkdir($this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug, 0700);
             } catch (IOException $e) {
@@ -336,7 +336,7 @@ class MediaController extends Controller
             }
         }
 
-        if($request->isXmlHttpRequest() && $ajax == true) {
+        if($request->isXmlHttpRequest() && $ajax === true) {
             $x       = $request->get('ajax_x');
             $y       = $request->get('ajax_y');
             $w_new       = $request->get('ajax_cropw');
@@ -354,7 +354,7 @@ class MediaController extends Controller
             $path = $entity->getPath();
 
             $filesystem = new Filesystem();
-            if($filesystem->exists( $this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug) == false) {
+            if($filesystem->exists( $this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug) === false) {
                 try {
                     $filesystem->mkdir($this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug, 0700);
                 } catch (IOException $e) {

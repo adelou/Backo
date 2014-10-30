@@ -57,7 +57,7 @@ class CropingController extends Controller
             
             $cropNameIsDuplicate = $this->cropFormatIsDuplicateAction($entity->getName());
             
-            if (false == $cropNameIsDuplicate) {
+            if (false === $cropNameIsDuplicate) {
                 $em->persist($entity);
                 $em->flush();
                 
