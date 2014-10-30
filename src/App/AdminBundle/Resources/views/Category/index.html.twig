@@ -25,7 +25,9 @@
                 <div class="form-group">
                     <div class="col-sm-12">
                     <div id="categories">
-                        {{ htmlTree |raw }}
+                        {% autoescape %}
+                            {{ htmlTree |raw }}
+                        {% endautoescape %}
                     </div>
                     </div>
                 </div>

@@ -81,7 +81,7 @@
                                             <td>{{ medias[key].id }}</td>
                                             <td>{{ medias[key].type }}</td>
                                             <td>{{ medias[key].name }}</td>
-                                            <td style="width:50px;">{{ medias[key]| formatImage('thumb',50) | raw }}</td>
+                                            <td style="width:50px;">{% autoescape %}{{ medias[key]| formatImage('thumb',50) | raw }}{% endautoescape %}</td>
                                             <td style="width:50px;"><a class="btn btn-danger btn-sm" onclick="deleteMedia('{{ key }}')"><i class="fa fa-trash-o"></i></a></td>
                                             {{ form_row(media) }}
                                         </tr>
