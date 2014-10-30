@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\CMSBundle\Entity\Article;
-use App\CMSBundle\Entity\Page;
+//use App\CMSBundle\Entity\Page;
 use App\CMSBundle\Form\Type\ArticleType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
