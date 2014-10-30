@@ -1,12 +1,12 @@
 <?php
 
-namespace App\CMSBundle\Form;
+namespace App\LanguageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PageMetaType extends AbstractType
+class LanguageFilterType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,8 @@ class PageMetaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('metaKey')
-            ->add('metaValue')
-            ->add('page')
+            ->add('isoCode','text',array("label" => "Langue / Code ISO", 'required' => false))
+            ->add('enabled','checkbox', array("label" => "Activé",'required' => false));
         ;
     }
     
@@ -27,7 +26,7 @@ class PageMetaType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\CMSBundle\Entity\PageMeta'
+            'data_class' => 'App\LanguageBundle\Entity\Language'
         ));
     }
 
@@ -36,6 +35,6 @@ class PageMetaType extends AbstractType
      */
     public function getName()
     {
-        return 'app_cmsbundle_pagemeta';
+        return 'app_language_form_language_filter';
     }
 }

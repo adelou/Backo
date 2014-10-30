@@ -1,12 +1,12 @@
 <?php
 
-namespace App\LanguageBundle\Form;
+namespace App\ECommerceBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class LanguageFilterType extends AbstractType
+class CommandType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,8 +15,9 @@ class LanguageFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('isoCode','text',array("label" => "Langue / Code ISO", 'required' => false))
-            ->add('enabled','checkbox', array("label" => "Activé",'required' => false));
+            ->add('reference')
+            ->add('totalPaid')
+            ->add('currentState')
         ;
     }
     
@@ -26,7 +27,7 @@ class LanguageFilterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\LanguageBundle\Entity\Language'
+            'data_class' => 'App\ECommerceBundle\Entity\Command'
         ));
     }
 
@@ -35,6 +36,6 @@ class LanguageFilterType extends AbstractType
      */
     public function getName()
     {
-        return 'app_language_form_language_filter';
+        return 'app_ecommercebundle_command';
     }
 }

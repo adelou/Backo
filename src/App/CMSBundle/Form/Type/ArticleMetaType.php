@@ -1,12 +1,12 @@
 <?php
 
-namespace App\ECommerceBundle\Form\Product;
+namespace App\CMSBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PriceType extends AbstractType
+class ArticleMetaType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,9 @@ class PriceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('price')
-            ->add('customer')
-            ->add('product')
+            ->add('metaKey')
+            ->add('metaValue')
+            ->add('article')
         ;
     }
     
@@ -27,7 +27,7 @@ class PriceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\ECommerceBundle\Entity\Price'
+            'data_class' => 'App\CMSBundle\Entity\ArticleMeta'
         ));
     }
 
@@ -36,6 +36,6 @@ class PriceType extends AbstractType
      */
     public function getName()
     {
-        return 'app_ecommercebundle_price';
+        return 'app_cmsbundle_articlemeta';
     }
 }

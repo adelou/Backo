@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\UserBundle\Entity\User;
-use App\UserBundle\Form\UserType;
+use App\UserBundle\Form\Type\UserType;
 use Symfony\Component\Form\FormError;
 
 /**

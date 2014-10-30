@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\CMSBundle\Entity\ArticleMeta;
-use App\CMSBundle\Form\ArticleMetaType;
+use App\CMSBundle\Form\Type\ArticleMetaType;
 
 /**
  * ArticleMeta controller.

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\ECommerceBundle\Form\Product;
+namespace App\ECommerceBundle\Form\Type\Product;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SupplierType extends AbstractType
+class PriceType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,8 +15,9 @@ class SupplierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('supplier')
+            ->add('price')
+            ->add('customer')
+            ->add('product')
         ;
     }
     
@@ -26,7 +27,7 @@ class SupplierType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\ECommerceBundle\Entity\Supplier'
+            'data_class' => 'App\ECommerceBundle\Entity\Price'
         ));
     }
 
@@ -35,6 +36,6 @@ class SupplierType extends AbstractType
      */
     public function getName()
     {
-        return 'app_ecommercebundle_supplier';
+        return 'app_ecommercebundle_price';
     }
 }

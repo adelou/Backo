@@ -8,8 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\LanguageBundle\Entity\Language;
-use App\LanguageBundle\Form\LanguageType;
-use App\LanguageBundle\Form\LanguageFilterType;
+use App\LanguageBundle\Form\Type\LanguageType;
+use App\LanguageBundle\Form\Type\LanguageFilterType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Intl\Intl;
 

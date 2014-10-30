@@ -1,12 +1,12 @@
 <?php
 
-namespace App\ECommerceBundle\Form\Product;
+namespace App\ECommerceBundle\Form\Type\SAV;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class FeatureType extends AbstractType
+class MessageType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,7 @@ class FeatureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('value')
-            ->add('product')
+            ->add('content', 'textarea', array('label' => 'message', 'required' => false))
         ;
     }
     
@@ -27,7 +25,7 @@ class FeatureType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\ECommerceBundle\Entity\Feature'
+            'data_class' => 'App\ECommerceBundle\Entity\SAV\Message'
         ));
     }
 
@@ -36,6 +34,6 @@ class FeatureType extends AbstractType
      */
     public function getName()
     {
-        return 'app_ecommercebundle_feature';
+        return 'app_ecommercebundle_sav_message';
     }
 }

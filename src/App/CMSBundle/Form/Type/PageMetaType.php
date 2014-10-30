@@ -1,12 +1,12 @@
 <?php
 
-namespace App\ECommerceBundle\Form;
+namespace App\CMSBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class DevisType extends AbstractType
+class PageMetaType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,7 +15,9 @@ class DevisType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
+            ->add('metaKey')
+            ->add('metaValue')
+            ->add('page')
         ;
     }
     
@@ -25,7 +27,7 @@ class DevisType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\ECommerceBundle\Entity\Devis'
+            'data_class' => 'App\CMSBundle\Entity\PageMeta'
         ));
     }
 
@@ -34,6 +36,6 @@ class DevisType extends AbstractType
      */
     public function getName()
     {
-        return 'app_ecommercebundle_devis';
+        return 'app_cmsbundle_pagemeta';
     }
 }

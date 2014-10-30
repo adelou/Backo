@@ -1,12 +1,12 @@
 <?php
 
-namespace App\AdminBundle\Form;
+namespace App\MediaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CategoryType extends AbstractType
+class CropingType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,12 +15,10 @@ class CategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('lft')
-            ->add('lvl')
-            ->add('rgt')
-            ->add('root')
-            ->add('parent')
+            ->add('name','text',array('label' => 'Nom'))
+            ->add('width','integer',array('label' => 'Largeur', 'data' => 500))
+            ->add('height','integer',array('label' => 'Hauteur', 'data' => 500))
+            ->add('quality','integer',array('label' => 'Qualité', 'data' => 100))
         ;
     }
     
@@ -30,7 +28,7 @@ class CategoryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\AdminBundle\Entity\Category'
+            'data_class' => 'App\MediaBundle\Entity\Croping'
         ));
     }
 
@@ -39,6 +37,6 @@ class CategoryType extends AbstractType
      */
     public function getName()
     {
-        return 'app_adminbundle_category';
+        return 'app_adminbundle_croping';
     }
 }

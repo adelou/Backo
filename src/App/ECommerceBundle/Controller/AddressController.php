@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\Address;
-use App\ECommerceBundle\Form\AddressType;
+use App\ECommerceBundle\Form\Type\AddressType;
 
 /**
  * Address controller.

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\CMSBundle\Form;
+namespace App\ECommerceBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ArticleMetaType extends AbstractType
+class DevisType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,7 @@ class ArticleMetaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('metaKey')
-            ->add('metaValue')
-            ->add('article')
+            ->add('title')
         ;
     }
     
@@ -27,7 +25,7 @@ class ArticleMetaType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\CMSBundle\Entity\ArticleMeta'
+            'data_class' => 'App\ECommerceBundle\Entity\Devis'
         ));
     }
 
@@ -36,6 +34,6 @@ class ArticleMetaType extends AbstractType
      */
     public function getName()
     {
-        return 'app_cmsbundle_articlemeta';
+        return 'app_ecommercebundle_devis';
     }
 }

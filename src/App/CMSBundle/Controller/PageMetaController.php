@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\CMSBundle\Entity\PageMeta;
-use App\CMSBundle\Form\PageMetaType;
+use App\CMSBundle\Form\Type\PageMetaType;
 
 /**
  * PageMeta controller.

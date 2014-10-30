@@ -1,6 +1,6 @@
 services:
     app.adminbundle.user.form.type:
-        class: App\AdminBundle\Form\UserType
+        class: App\AdminBundle\Form\Type\UserType
         arguments:
             - "@service_container"
         tags:
