@@ -3,7 +3,7 @@ namespace App\AdminBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AdmineService
+class AdminService
 {
     /*
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
