@@ -178,7 +178,7 @@
         {{ form_errors(form) }}
         </div>
     {%- else -%}
-        {% autoescape %}
+        {% autoescape 'html' %}
             <div {{ block('widget_container_attributes') }}>
                 {{- date_pattern|replace({
                 '{{ year }}':  form_widget(form.year),
