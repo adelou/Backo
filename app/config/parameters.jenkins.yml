@@ -11,5 +11,4 @@ parameters:
     mailer_user: null
     mailer_password: null
     locale: en
-    secret: 001122334455adelou66778899
     filemanager_path: uploads/medias/
