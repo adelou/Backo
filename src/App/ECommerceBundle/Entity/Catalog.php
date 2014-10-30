@@ -3,6 +3,7 @@
 namespace App\ECommerceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Catalog
@@ -48,7 +49,7 @@ class Catalog
      */
     public function __construct()
     {
-        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -108,18 +109,19 @@ class Catalog
     }
 
     /**
-     * Get products
-     *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @param mixed $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
+
+    /**
+     * @return mixed
      */
     public function getProducts()
     {
         return $this->products;
-    }
-    
-     public function setProducts(ArrayCollection $product)
-    {
-        $this->products = $product;
     }
 
     /**
