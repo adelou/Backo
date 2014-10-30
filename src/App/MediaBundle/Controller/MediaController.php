@@ -35,7 +35,7 @@ class MediaController extends Controller
         if ($request->isXmlHttpRequest()) {
 
             /* DataTable Parameters*/
-            $filters = $request->get('filters');
+            //$filters = $request->get('filters');
             $lang = $request->get('lang');
             if(empty($lang)){$lang = $this->container->getParameter('locale');}
             $sortCol = $request->get('iSortCol_0');
@@ -123,7 +123,7 @@ class MediaController extends Controller
                 $newHeight = 50;
             }
             $dest = $media->getUploadRootDir() . '/thumb/' . $media->getPath();
-            $this->cropAction($request, $x = 0, $y = 0,$w_new = $newWidth, $h_new = $newHeight, $w = $aDataImageOrigin[0], $h = $aDataImageOrigin[1], $id = null, $slug = "thumb", $src, $extension, $dest, false);
+            $this->cropAction($request, 0, 0, $newWidth, $newHeight, $aDataImageOrigin[0], $aDataImageOrigin[1], null, "thumb", $src, $extension, $dest, false);
         }
 
         $output = array();
@@ -512,7 +512,7 @@ class MediaController extends Controller
             $medias_id = $request->request->get('medias_id');
             $repo = $request->request->get('repo');
             $object_id = $request->request->get('id');
-            $object = $request->request->get('object');
+            //$object = $request->request->get('object');
 
             foreach($medias_id as $key => $id) {
                 $entity = $em->getRepository($repo)->findOneBy(array('article' => $object_id, 'media' => $id));

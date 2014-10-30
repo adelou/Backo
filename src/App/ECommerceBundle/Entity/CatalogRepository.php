@@ -40,11 +40,11 @@ class CatalogRepository extends EntityRepository
             $qb = $this->createQueryBuilder('a');
             $qb->select('a');
             
-            $filters = $oRequest->get('filters');
-            $lang = $oRequest->get('lang');
+            //$filters = $oRequest->get('filters');
+            /*$lang = $oRequest->get('lang');
             if(empty($lang)){
                 $lang = $container->getParameter('locale');
-            }
+            }*/
             $qb->setFirstResult($oRequest->get('iDisplayStart'));
             $qb->setMaxResults($oRequest->get('iDisplayLength'));
             $result =  $qb->getQuery()->getResult();

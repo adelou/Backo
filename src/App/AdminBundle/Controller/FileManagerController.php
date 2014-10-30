@@ -40,13 +40,13 @@ class FileManagerController extends Controller
 
         }
 
-        $options = array(
+        /*$options = array(
             'decorate' => true,
             'rootOpen' => '<ul>',
             'rootClose' => '</ul>',
             'childOpen' => '<li>',
             'childClose' => '</li>'
-        );
+        );*/
         $htmlTree = $em->getRepository('AppAdminBundle:FileManager')->childrenHierarchy(
             null, /* starting from root nodes */
             false, /* true: load all children, false: only direct */
@@ -105,7 +105,7 @@ class FileManagerController extends Controller
                 case "move" :
                     $filemanager = $em->getRepository('AppAdminBundle:FileManager')->find($id);
                     $parentFilemanager = $em->getRepository('AppAdminBundle:FileManager')->find($parentid);
-                    $filesystem->copy($filemanager->getPath().'/'.$filemanager->getTitle(), $parentFilemanager->getPath().'/'.$parentFilemanager->getTitle().'/'.$filemanager->getTitle(), $override = false);
+                    $filesystem->copy($filemanager->getPath().'/'.$filemanager->getTitle(), $parentFilemanager->getPath().'/'.$parentFilemanager->getTitle().'/'.$filemanager->getTitle(), false);
                     //$filesystem->remove($filemanager->getPath().'/'.$filemanager->getTitle());
                     $filemanager->setParent($parentFilemanager);
                     $em->persist($filemanager);

@@ -35,7 +35,7 @@ class TicketController extends Controller
         if ($request->isXmlHttpRequest()) {
 
             /* DataTable Parameters*/
-            $lang = $request->get('lang');
+            //$lang = $request->get('lang');
             $sortCol = $request->get('iSortCol_0');
             $sortDir = $request->get('iSortDir_0');
             $start = $request->get('iDisplayStart');

@@ -134,7 +134,7 @@ class CropingController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        //$deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
@@ -250,11 +250,11 @@ class CropingController extends Controller
     {
         $oEm          = $this->getDoctrine()->getManager();
         $oCropping    = $oEm->getRepository('AppMediaBundle:Croping')->findByName($sCropingName);
-        $bIsDuplicate = false; 
+        //$bIsDuplicate = false;
         //die('passe : check duplicate');
         
         if ($oCropping) {
-            $bIsDuplicate = true;
+            //$bIsDuplicate = true;
             // creation d'un message flash
             
             // Flashbag
