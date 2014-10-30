@@ -32,8 +32,12 @@ class FileManagerController extends Controller
 
         $entities = $em->getRepository('AppAdminBundle:FileManager')->findAll();
         if(empty($entities)) {
+            if(!$this->container->getParameter('filemanager_path')) {
+                $this->indexation($this->$this->get('kernel')->getRootDir() . '/../web');
+            } else {
+                $this->indexation($this->container->getParameter('filemanager_path'));
+            }
 
-            $this->indexation($this->container->getParameter('filemanager_path'));
         }
 
         $options = array(
@@ -128,7 +132,7 @@ class FileManagerController extends Controller
         }
     }
 
-    public function indexation($directory, $parent = 0) {
+    protected function indexation($directory, $parent = 0) {
         $em = $this->getDoctrine()->getManager();
         $parent = $em->getRepository('AppAdminBundle:FileManager')->find($parent);
         if(is_dir($directory)){
@@ -141,18 +145,17 @@ class FileManagerController extends Controller
                         $file->setPath($iterator->getPath());
                         $file->setParent($parent);
                         $em->persist($file);
-                        $em->flush();
                     } else if ($fileinfo->isDir()) {
                         $dir = new FileManager();
                         $dir->setTitle($fileinfo->getFileName());
                         $dir->setPath($iterator->getPath());
                         $dir->setParent($parent);
                         $em->persist($dir);
-                        $em->flush();
                         $this->indexation($directory.'/'.$fileinfo->getFileName(), $dir->getId());
                     }
                 }
             }
+            $em->flush();
         }
     }
 }

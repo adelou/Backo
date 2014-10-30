@@ -176,8 +176,8 @@ class MediaController extends Controller
         foreach ($files as $uploadedFile) {
             $media->file = $uploadedFile;
             $em->persist($media);
-            $em->flush();
         }
+        $em->flush();
 
         $src = $media->getAbsolutePath();
         $extension = $media->getExtension();
