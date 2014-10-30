@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\CMSBundle\Entity\Page;
-use App\CMSBundle\Form\PageType;
+use App\CMSBundle\Form\Type\PageType;
 
 
 

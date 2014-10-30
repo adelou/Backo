@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MediaBundle\Form;
+namespace App\MediaBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

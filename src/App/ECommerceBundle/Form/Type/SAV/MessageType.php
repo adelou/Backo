@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ECommerceBundle\Form\SAV;
+namespace App\ECommerceBundle\Form\Type\SAV;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

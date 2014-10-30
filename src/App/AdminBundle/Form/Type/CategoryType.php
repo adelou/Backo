@@ -1,12 +1,12 @@
 <?php
 
-namespace App\CMSBundle\Form;
+namespace App\AdminBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class PageMetaType extends AbstractType
+class CategoryType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,9 +15,12 @@ class PageMetaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('metaKey')
-            ->add('metaValue')
-            ->add('page')
+            ->add('title')
+            ->add('lft')
+            ->add('lvl')
+            ->add('rgt')
+            ->add('root')
+            ->add('parent')
         ;
     }
     
@@ -27,7 +30,7 @@ class PageMetaType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\CMSBundle\Entity\PageMeta'
+            'data_class' => 'App\AdminBundle\Entity\Category'
         ));
     }
 
@@ -36,6 +39,6 @@ class PageMetaType extends AbstractType
      */
     public function getName()
     {
-        return 'app_cmsbundle_pagemeta';
+        return 'app_adminbundle_category';
     }
 }

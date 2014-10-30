@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CMSBundle\Form;
+namespace App\CMSBundle\Form\Type;
 
 use App\CMSBundle\Entity\ArticleMeta;
 use Doctrine\Common\Cache\ArrayCache;

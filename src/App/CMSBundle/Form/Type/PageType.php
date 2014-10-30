@@ -1,36 +1,45 @@
 <?php
 
-namespace App\AdminBundle\Form;
+namespace App\CMSBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CategoryType extends AbstractType
+class PageType extends AbstractType
 {
-        /**
+
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('lft')
-            ->add('lvl')
-            ->add('rgt')
-            ->add('root')
-            ->add('parent')
+            ->add('title', 'text')
+            ->add('content', 'text')
+            ->add('slug', 'text')
+            ->add('title', 'text')
+            ->add('pageMetas', 'entity', array(
+                'class' => 'AppCMSBundle:PageMeta',
+                'expanded' => false,
+                'multiple' => true
+            ))
+            ->add('publishedAt', 'date', array(
+                'input'  => 'datetime',
+                'widget' => 'choice'))
         ;
     }
-    
+
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\AdminBundle\Entity\Category'
+            'data_class' => 'App\CMSBundle\Entity\Page'
         ));
     }
 
@@ -39,6 +48,6 @@ class CategoryType extends AbstractType
      */
     public function getName()
     {
-        return 'app_adminbundle_category';
+        return 'app_cmsbundle_page';
     }
 }

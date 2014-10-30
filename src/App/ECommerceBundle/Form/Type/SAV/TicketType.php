@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ECommerceBundle\Form\SAV;
+namespace App\ECommerceBundle\Form\Type\SAV;
 
 use App\ECommerceBundle\Form\DataTransformer\ObjecttoCollectionTransformer;
 use Symfony\Component\DependencyInjection\Container;
