@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\Product\Feature;
-use App\ECommerceBundle\Form\Product\FeatureType;
+use App\ECommerceBundle\Form\Type\Product\FeatureType;
 
 /**
  * Feature controller.

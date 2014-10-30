@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\Product\Price;
-use App\ECommerceBundle\Form\Product\PriceType;
+use App\ECommerceBundle\Form\Type\Product\PriceType;
 
 /**
  * Price controller.

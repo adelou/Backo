@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\LanguageBundle\Entity\Country;
-use App\LanguageBundle\Form\CountryType;
+use App\LanguageBundle\Form\Type\CountryType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

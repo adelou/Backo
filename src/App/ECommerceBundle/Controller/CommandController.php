@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\Command;
-use App\ECommerceBundle\Form\CommandType;
+use App\ECommerceBundle\Form\Type\CommandType;
 
 /**
  * Command controller.

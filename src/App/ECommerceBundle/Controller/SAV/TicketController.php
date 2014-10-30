@@ -8,10 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\SAV\Ticket;
-use App\ECommerceBundle\Form\SAV\TicketType;
+use App\ECommerceBundle\Form\Type\SAV\TicketType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\ECommerceBundle\Entity\SAV\Message;
-use App\ECommerceBundle\Form\SAV\MessageType;
+use App\ECommerceBundle\Form\Type\SAV\MessageType;
 
 /**
  * Ticket controller.

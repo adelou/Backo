@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\Devis;
-use App\ECommerceBundle\Form\DevisType;
+use App\ECommerceBundle\Form\Type\DevisType;
 
 /**
  * Devis controller.

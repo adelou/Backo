@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\SAV\Message;
-use App\ECommerceBundle\Form\SAV\MessageType;
+use App\ECommerceBundle\Form\Type\SAV\MessageType;
 
 /**
  * Message controller.

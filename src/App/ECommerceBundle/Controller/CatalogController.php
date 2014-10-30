@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\Catalog;
 use App\ECommerceBundle\Entity\Product\Product;
-use App\ECommerceBundle\Form\CatalogType;
+use App\ECommerceBundle\Form\Type\CatalogType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
