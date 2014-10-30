@@ -184,7 +184,7 @@
                 '{{ year }}':  form_widget(form.year),
                 '{{ month }}': form_widget(form.month),
                 '{{ day }}':   form_widget(form.day),
-                })|raw -}}
+                })|e -}}
             </div>
         {% endautoescape %}
     {%- endif %}

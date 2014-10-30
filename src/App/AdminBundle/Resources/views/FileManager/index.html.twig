@@ -26,7 +26,7 @@
                     <div class="col-sm-12">
                     <div id="categories">
                         {% autoescape 'html' %}
-                            {{ htmlTree |raw }}
+                            {{ htmlTree |e }}
                         {% endautoescape %}
                     </div>
                     </div>
