@@ -1,5 +1,0 @@
-_assetic:
-    resource: .
-    type: assetic
-_app:
-    resource: /Users/adeloustad/Sites/Total-Bitume/app/config/routing_dev.yml
