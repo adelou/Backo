@@ -325,7 +325,7 @@ class TicketController extends Controller
      * @Method("GET")
      * @Template("AppECommerceBundle:SAV\Ticket:newMessage.html.twig")
      */
-    public function newMessage($id) {
+    protected function newMessageAction($id) {
         $em = $this->getDoctrine()->getManager();
         $ticket = $em->getRepository('AppECommerceBundle:SAV\Ticket')->find($id);
 
