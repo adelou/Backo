@@ -1,0 +1,141 @@
+{% extends 'AppAdminBundle:Layout:admin.html.twig' %}
+{% form_theme form 'AppAdminBundle:Form:fields-tabs.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <form class="form-horizontal tasi-form cmxform" method="post" action="{{ path('product_create') }}">
+        <div class="col-md-10">
+            <div class="tab-content">
+                <div id="infos" class="tab-pane active">
+                    <section class="panel">
+                        <header class="panel-heading">
+                                <i class="fa fa-info-circle"></i> Informations
+                        </header>
+                        <div class="panel-body">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.description) }}
+                            {{ form_row(form.descriptionShort) }}
+                        </div>
+                    </section>
+                </div>
+
+                <div id="price" class="tab-pane">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <i class="fa fa-money"></i> Prix
+                        </header>
+                        <div class="panel-body">
+                        </div>
+                    </section>
+                </div>
+
+                <div id="category" class="tab-pane">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <i class="fa fa-pagelines"></i> Categories
+                        </header>
+                        <div class="panel-body">
+                            {{ form_widget(form.categories) }}
+                        </div>
+                    </section>
+                </div>
+
+                <div id="tab_4" class="tab-pane">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <i class="fa fa-truck"></i>  Livraison
+                        </header>
+                        <div class="panel-body">
+                        </div>
+                    </section>
+                </div>
+
+                <div id="media" class="tab-pane">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <i class="fa fa-film"></i> Images
+                        </header>
+                        <div class="panel-body">
+                            <input class="form-control" type="text" id="media-autocomplete" placeholder="rechercher un média">
+                            <ul class="medias" data-prototype="{{ form_widget(form.medias.vars.prototype)|e }}"></ul>
+                            <table class="table table-striped table-hover table-bordered" id="medias-table">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Type média</th>
+                                    <th>Nom</th>
+                                    <th>Apercu</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="col-md-12">
+              <a href="{{ path('product') }}" class="btn btn-shadow btn-default"><i class="fa fa-arrow-left"></i> Retour</a>
+              <button type="submit" class="btn btn-shadow btn-success pull-right"><i class="fa fa-save"></i> Enregister</button>
+            </div>
+        </div>
+
+            {{ form_widget(form._token) }}
+        </form>
+        <div class="col-md-2">
+            <ul class="vertical-menu">
+                <li class="active"><a href="#infos" data-toggle="tab"><i class="fa fa-info-circle"></i>  Informations</a></li>
+                <li><a href="#price" data-toggle="tab"><i class="fa fa-money"></i>  Prix</a></li>
+                <li><a href="#category" data-toggle="tab"><i class="fa fa-pagelines"></i> Catégories</a></li>
+                <li><a href="#tab_4" data-toggle="tab"><i class="fa fa-truck"></i> Livraison</a></li>
+                <li><a href="#supllier" data-toggle="tab"><i class="fa fa-gears"></i> Fournisseurs</a></li>
+                <li><a href="#media" data-toggle="tab"><i class="fa fa-film"></i> Images</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        var collectionHolder = $('ul.medias');
+
+            $( "#media-autocomplete" ).autocomplete({
+                minLength: 0,
+                source: '{{  path('media_ajax',{'type':'image'}) }}',
+                select: function(event, ui) {
+                    event.preventDefault();
+                    console.log(ui.item.value);
+                    var prototype = collectionHolder.attr('data-prototype');
+                    var length = $("#medias-table tbody").children().length
+                    var newForm = prototype.replace(/__name__/g, length);
+                     //collectionHolder.append(newForm);
+                    $("#medias-table tbody").append('<tr id="' + length + '"><td>' + ui.item.value + ' <td>' + ui.item.type + '</td><td>' + ui.item.label + '</td><td style="width: 50px;">' + ui.item.img + '</td><td style="width: 45px;"><a class="btn btn-danger btn-sm" onclick="deleteMedia(' + length + ')"><i class="fa fa-trash-o"></i></a></td></tr>');
+                    $("#medias-table tbody tr#" + length).append(newForm);
+                    $("#app_ecommercebundle_product_form_product_medias_" + length).attr('value',ui.item.value);
+
+                }
+            })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $("<li></li>").data("item.autocomplete", item)
+                            .append("<a class='" + item.value + "'></a><a>" + item.img + item.label + "</a>")
+                            .appendTo(ul);
+            };
+
+        function deleteMedia(id) {
+            $("#medias-table tbody tr#" + id).remove();
+        }
+
+    </script>
+{% endblock %}
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+services:
+    app.language.twig:
+        class: App\LanguageBundle\Twig\LanguageExtension
+        arguments:           
+          - "@service_container"
+        tags:
+            - { name: twig.extension }

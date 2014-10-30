@@ -1,0 +1,14 @@
+
+<div class="btn-group pull-right">
+    <button class="btn btn-lang dropdown-toggle" data-toggle="dropdown">Sélection de la langue : <span id="langue_selected" >{{ lang | language }} </span><i class="fa fa-angle-down"></i></button>
+    <ul class="dropdown-menu pull-right">
+        {% for language in languages %}
+            {% if id is not empty %}
+                {% set path =  path(routing,{'lang' : language.isoCode , 'id' : id}) %}
+            {% else %}
+                {% set path =  path(routing,{'lang' : language.isoCode}) %}
+            {% endif %}
+            <li><a class="langue_choice" href="{{ path }}">{{ language.isoCode | language }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

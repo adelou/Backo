@@ -1,0 +1,131 @@
+<aside>
+  <div id="sidebar"  class="nav-collapse ">
+      <!-- sidebar menu start-->
+      <ul class="sidebar-menu" id="nav-accordion">
+          {% if is_granted("ROLE_SUPER_ADMIN") %}
+          <li class="sub-menu">
+              <a href="javascript:;" {% if app.request.get('_route') == 'user_list' or app.request.get('_route') == 'fos_user_group_list' %}class='active'{% endif %}>
+                  <i class="fa fa-users"></i>
+                  <span>Utilisateurs / Rôles</span>
+              </a>
+              <ul class="sub">
+                  <li {% if app.request.get('_route') == 'user_list' %}class='active'{% endif %}><a  href="{{ path ('user_list') }}">Liste des utilisateurs</a></li>
+                  <li {% if app.request.get('_route') == 'fos_user_group_list' %}class='active'{% endif %}><a  href="{{ path ('fos_user_group_list') }}">Groupes de Rôles</a></li>
+              </ul>
+          </li>
+          {% endif %}
+          <li class="sub-menu">
+              <a href="javascript:;" {% if app.request.get('_route') == 'country' or app.request.get('_route') == 'language' %}class='active'{% endif %}>
+                  <i class="fa fa-globe"></i>
+                  <span>Langues / Pays</span>
+              </a>
+              <ul class="sub">
+                  <li {% if app.request.get('_route') == 'country' %}class='active'{% endif %}><a  href="{{ path ('country') }}">Liste des pays</a></li>
+                  <li {% if app.request.get('_route') == 'language' %}class='active'{% endif %}><a  href="{{ path ('language') }}">Liste des langues</a></li>
+              </ul>
+          </li>
+          <li>
+              <a  href="{{ path('filemanager') }}">
+                  <i class="fa fa-pagelines"></i>
+                  <span>Gestion de fichiers</span>
+              </a>
+          </li>
+          <li>
+              <a  href="{{ path('category') }}">
+                  <i class="fa fa-pagelines"></i>
+                  <span>Gestion des Categories</span>
+              </a>
+          </li>
+          <li class="sub-menu">
+              <a href="javascript:;" >
+                  <i class="fa fa-shopping-cart"></i>
+                  <span>Gestion des catalogues</span>
+              </a>
+              <ul class="sub">
+                  <li class="sub-menu">
+                      <a href="javascript:;" {% if app.request.get('_route') == 'product' or app.request.get('_route') == 'product' %}class='active'{% endif %}>
+                          <i class="fa fa-flask"></i>
+                          <span>Produits</span>
+                      </a>
+                      <ul class="sub">
+                          <li {% if app.request.get('_route') == 'product' %}class='active'{% endif %}><a  href="{{ path ('product') }}">Catalogue produits</a></li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+          <li class="sub-menu">
+              <a href="javascript:;" {% if app.request.get('_route') == 'ticket' or app.request.get('_route') == 'customer' %}class='active'{% endif %}>
+                  <i class="fa fa-users"></i>
+                  <span>Clients</span>
+              </a>
+              <ul class="sub">
+                  <li {% if app.request.get('_route') == 'ticket' %}class='active'{% endif %}><a  href="{{ path ('customer') }}">Clients</a></li>
+              </ul>
+              <ul class="sub">
+                  <li {% if app.request.get('_route') == 'ticket' %}class='active'{% endif %}><a  href="{{ path ('ticket') }}">SAV</a></li>
+              </ul>
+          </li>
+
+          <li class="sub-menu">
+              <a href="javascript:;" {% if app.request.get('_route') == 'media' or app.request.get('_route') == 'croping' %}class='active'{% endif %}>
+                  <i class="fa fa-film"></i>
+                  <span>Médiathèque</span>
+              </a>
+              <ul class="sub">
+                  <li {% if app.request.get('_route') == 'media' %}class='active'{% endif %}><a  href="{{ path ('media') }}">Liste des médias</a></li>
+                  <li {% if app.request.get('_route') == 'croping' %}class='active'{% endif %}><a  href="{{ path ('croping') }}">Formats de croping</a></li>
+              </ul>
+          </li>
+          <li class="sub-menu">
+              <a href="javascript:;" >
+                  <i class="fa fa-code"></i>
+                  <span>CMS</span>
+              </a>
+              <ul class="sub">
+
+                  <li class="sub-menu">
+                      <a  href="boxed_page.html">Article</a>
+                      <ul class="sub">
+                          <li>
+                              <a  href="{{ path('article') }}">Tous les articles</a>
+                          </li>
+                          <li class="sub-menu">
+                              <a  href="{{ path('article_new') }}">Ajouter un article</a>
+                          </li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a  href="boxed_page.html">Médias</a>
+                      <ul class="sub">
+                          <li>
+                               <a  href="{{ path('media') }}">Tous les médias</a>
+                          </li>
+                          <li class="sub-menu">
+                              <a  href="{{ path('media_new') }}">Ajouter un média</a>
+                          </li>
+                      </ul>
+                  </li>
+                  <li class="sub-menu">
+                      <a  href="boxed_page.html">Pages</a>
+                      <ul class="sub">
+                          <li>
+
+                                  <a  href="{{ path('page') }}">Tous les pages</a>
+                          </li>
+                          <li class="sub-menu">
+                              <a  href="{{ path('page_new') }}">Ajouter un page</a>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+          <li>
+              <a  href="{{ path('fos_user_security_logout') }}">
+                  <i class="fa fa-power-off"></i>
+                  <span>Se déconnecter</span>
+              </a>
+          </li>
+      </ul>
+  </div>
+</aside>
+      

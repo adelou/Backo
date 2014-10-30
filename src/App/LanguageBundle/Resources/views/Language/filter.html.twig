@@ -1,0 +1,16 @@
+{% form_theme form 'AppAdminBundle:Form:fields-filter.html.twig' %}
+
+<div id="filters" filters="false" class="col-sm-12" style="display: none;">
+    <section class="panel">
+        <header class="panel-heading">
+            <i class="fa fa-search"></i> Filtres de recherche
+            <span class="tools pull-right">
+                <a class="fa fa-chevron-down" href="javascript:;"></a>
+                <button class="btn" onclick="filtersShow();"><i class="fa fa-times"></i></button>
+            </span>
+        </header>
+        <div class="panel-body">
+            {{ form(form) }}
+        </div>
+    </section>
+</div>

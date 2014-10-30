@@ -1,0 +1,282 @@
+/* ===  FLUX  === */
+
+  .cf:before,.cf:after{content:"";display:table}
+  .cf:after{clear:both}
+  .cf{*zoom:1}
+
+  .fright{float:right}
+  .fleft{float:left}
+  .cboth{clear:both}
+  .cleft{clear:left}
+  .cright{clear:right}
+  .iblock{display:inline-block}
+  .ie7 .iblock{display: inline} /*correct IE 7 bug inline-block*/
+  .iline{display:inline}
+  .block{display: block}
+  .table{display: table}
+  .cell{display: table-cell}
+
+  .ovHidden{overflow:hidden}
+
+/* ===  POSITION  === */
+
+  .rel{position:relative}
+  .abs{position: absolute}
+  .fixed{position: fixed}
+  .center{margin-left: auto;margin-right: auto}
+
+/* ===  ALIGNEMENT VERTICAL  === */
+
+  .vtop{vertical-align:top}
+  .vbot{vertical-align:bottom}
+  .vmid{vertical-align:middle}
+  .vcenter-mid:before{
+    content:'';
+    display: inline-block;
+    height:100%;
+    vertical-align: middle
+  }
+
+/* ===  TEXT ALIGN  === */
+
+  .txtcenter{text-align:center}
+  .txtright{text-align:right}
+  .txtleft{text-align:left}
+  .txtjustify{text-align:justify}
+
+/* ===  TEXT STYLE  === */
+
+  .underline{text-decoration:underline}
+  .uppercase{text-transform:uppercase}
+
+  .italic,em{font-style:italic}
+  .bold,b,strong{font-weight:bold} /*A AJUSTER SI ON CHARGE AL NUANCE BOLD D'UNE WEBFONT */
+  .light{font-weight: normal}
+  .small{font-size:80%}
+  .smaller{ font-size: 70%}
+  .smallest{font-size: 60%}
+  .big{font-size:110%}
+  .bigger{font-size:120%}
+  .biggest{font-size:130%}
+
+/* ===  HIDDEN  === */
+
+  .hidden { display: none;}
+  .invisible { visibility: hidden}
+  .next.faded{background:url('../img/quizz-nav-faded.png') no-repeat 0 0 transparent;}
+
+/* ===  CANCELLING  === */
+
+  .noBorder{border:none}
+ 
+  /* éviter problèmes de margin + padding*/
+  h1:first-child,
+  h2:first-child,
+  h3:first-child,
+  h4:first-child,
+  h5:first-child,
+  h6:first-child {
+    margin-top: 0;
+  }
+  /* virer marge basse sur dernier enfant */
+
+  p:last-child,
+  ul:last-child,
+  ol:last-child,
+  dl:last-child,
+  blockquote:last-child,
+  pre:last-child,
+  table:last-child {
+    margin-bottom: 0
+  }
+  
+
+  /* éviter marges supplémentaires sur éléments imbriqués */
+  li p,
+  li ul {
+    margin-bottom: 0;
+    margin-top: 0
+  }
+
+/* ===  MARGIN  === */
+
+  .mt0 { margin-top: 0 }
+  .mt1 { margin-top: 1em }
+  .mt2 { margin-top: 2em }
+  .mt3 { margin-top: 3em }
+  .mr0 { margin-right: 0 }
+  .mr1 { margin-right: 1em }
+  .mr2 { margin-right: 2em }
+  .mr3 { margin-right: 3em }
+  .mb0 { margin-bottom: 0 }
+  .mb1 { margin-bottom: 1em }
+  .mb2 { margin-bottom: 2em }
+  .mb3 { margin-bottom: 3em }
+  .ml0 { margin-left: 0 }
+  .ml1 { margin-left: 1em }
+  .ml2 { margin-left: 2em }
+  .ml3 { margin-left: 3em }
+  .m0  { margin: 0 }
+  .m1  { margin: 1em}
+  .m2  { margin: 2em}
+
+/* ===  PADDING  === */
+
+  .pt0 { padding-top: 0 }
+  .pt1 { padding-top: 1em }
+  .pt2 { padding-top: 2em }
+  .pt3 { padding-top: 3em }
+  .pr0 { padding-right: 0 }
+  .pr1 { padding-right: 1em }
+  .pr2 { padding-right: 2em }
+  .pb0 { padding-bottom: 0 }
+  .pb1 { padding-bottom: 1em }
+  .pb2 { padding-bottom: 2em }
+  .pb3 { padding-bottom: 3em }
+  .pl0 { padding-left: 0 }
+  .pl1 { padding-left: 1em }
+  .pl2 { padding-left: 2em }
+  .p0  { padding: 0 }
+  .p1  { padding: 1em}
+  .p2  { padding: 2em}
+
+/* === HAUTEUR === */
+
+.h100{height:100%}
+.hauto{height:auto}
+
+/*=== LARGEUR DESKTOP === */
+
+  .wd5{ width: 5%}
+  .wd10{ width: 10%}
+  .wd15{ width: 15%}
+  .wd20{ width: 20%}
+  .wd25{ width: 25%}
+  .wd30{ width: 30%}
+  .wd33{ width: 33.333%}
+  .wd40{ width: 40%}
+  .wd45{ width: 45%}
+  .wd50{ width: 50%}
+  .wd55{ width: 55%}
+  .wd60{ width: 60%}
+  .wd66{ width: 66.666%}
+  .wd70{ width: 70%}
+  .wd75{ width: 75%}
+  .wd80{ width: 80%}
+  .wd85{ width: 85%}
+  .wd90{ width: 90%}
+  .wd95{ width: 95%}
+  .wd100{ width: 100%;float:none}
+
+/* ===  GRID  === */
+
+.region{
+  display: block;
+  float:left;
+  position: relative;
+  padding:0 1em; /* en fonction projet*/
+}
+
+.region.full{float:none}
+
+.region.iblock{
+  float:none;
+  display: inline-block
+}
+
+.row{clear:both}
+.row:before,
+.row:after {
+    content: " "; 
+    display: table; 
+}
+.row:after { clear: both }
+.row { *zoom: 1; /*IE*/}
+
+/* === BOX-SIZING === */
+
+*,
+*:before,
+*:after{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;   
+    box-sizing: border-box
+}
+
+/* === SELECTION  === */
+
+::-moz-selection {background: #fbc2ff;text-shadow: none}
+::selection { background: #fbc2ff;text-shadow: none}
+
+/* === COLOR  === */
+
+.light-clr{color:#fff}
+
+.warning-clr{color:#e40202}
+
+.ok-clr{color:#00c834}
+
+/* === BG COLOR  === */
+
+.sky-bg-color{background-color: #008cc8}
+.smoke-bg-color{background-color: #c5c5c5}
+
+/* === TITLE  === */
+
+  .tt-1{font-size: 2em}
+  .tt-2{font-size: 1.75em}
+  .tt-3{font-size: 1.625em}
+  .tt-4{font-size: 1.5em}
+  .tt-5{font-size: 1.375em}
+  .tt-6{font-size: 1.25em}
+  .tt-reset{font-size: 1em}
+
+.tt-underline{
+  padding-bottom:0.5%;
+  border-bottom: 1px solid #ddd;
+}
+
+/* === STRUCTURE GLOBALE === */
+
+body {
+    font-family: 'brandon_grotesque_regularRg';
+    font-size: 1em; 
+    background: #C7DEE2;
+    position: relative;
+    color:#353d3f;
+    line-height: 1; /* à corriger si besoin est */
+    overflow-x:hidden;
+}
+
+p{
+  line-height: 1.3; 
+  font-size:1.275em;
+  margin-bottom:1em
+}
+
+h1,h2,h3,h4,h5,h6{font-size:1em; margin-bottom:1em}
+
+p,a,label,input,select,textarea{color:#353d3f; font-family: 'brandon_grotesque_regularRg'}
+
+input[type='text'], textarea{
+  border:0 none;
+  border-radius: 4px;
+  padding:10px 20px 10px 20px;
+  width:100%;
+  display: block;
+  color:#999;
+  font-size:1.175em;
+}
+
+/* ===ANCHOR === */
+
+a:hover{color:#222}
+
+/* === FONT-SIZE === */
+
+a,span,li{font-size: 1em}
+
+/* === FONT-SIZE INHERITANCE === */
+
+li a, li p, li span, p a, p span, span a, span p{font-size: inherit} 
+

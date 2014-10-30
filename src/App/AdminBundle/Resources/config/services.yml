@@ -1,0 +1,23 @@
+services:
+    app.adminbundle.user.form.type:
+        class: App\AdminBundle\Form\UserType
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: form.type, alias: app_adminbundle_user }
+
+    app.twig.admin_extension:
+        class: App\AdminBundle\Twig\AdminExtension
+        arguments:           
+          - "@service_container"
+        tags:
+            - { name: twig.extension }
+
+    app.adminbundle.services.language:
+            class: App\AdminBundle\Services\LanguageService
+            arguments:
+              - "@service_container"
+    app.adminbundle.services.mailer:
+        class: App\AdminBundle\Services\MailerService
+        arguments:
+          - "@service_container"

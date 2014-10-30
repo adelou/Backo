@@ -1,0 +1,100 @@
+{% extends 'AppAdminBundle:Layout:admin.html.twig' %}
+{% form_theme form 'AppAdminBundle:Form:fields-tabs.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <form class="form-horizontal tasi-form cmxform" method="post" action="{{ path('customer_create') }}">
+            <div class="col-md-10">
+                <div class="tab-content">
+                    <div id="infos" class="tab-pane active">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                <i class="fa fa-info-circle"></i> Informations
+                            </header>
+                            <div class="panel-body">
+                                {{ form_row(form.gender) }}
+                                {{ form_row(form.user) }}
+                                {{ form_row(form.birthday) }}
+                                {{ form_row(form.newsletter) }}
+                            </div>
+                        </section>
+                    </div>
+                    <div id="adresses" class="tab-pane">
+                        <section class="panel">
+                            <header class="panel-heading">
+                                <i class="fa fa-money"></i> Adresses
+                            </header>
+                            <div class="panel-body">
+                                <ul class="address" data-prototype="{{ form_widget(form.address.vars.prototype)|e }}">
+
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="col-md-12 actions">
+                    <a href="{{ path('customer') }}" class="btn btn-shadow btn-default"><i class="fa fa-arrow-left"></i> Retour</a>
+                    <button type="submit" class="btn btn-shadow btn-success pull-right"><i class="fa fa-save"></i> Enregister</button>
+                </div>
+            </div>
+            {{ form_widget(form._token) }}
+        </form>
+        <div class="col-md-2">
+            <ul class="vertical-menu">
+                <li class="active"><a href="#infos" data-toggle="tab"><i class="fa fa-info-circle"></i>  Informations</a></li>
+                <li><a href="#adresses" data-toggle="tab"><i class="fa fa-envelope"></i>  Adresses</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var collectionHolder = $('ul.address');
+        collectionHolder.find('li').each(function() {
+            addTranslationFormDeleteLink($(this));
+        });
+
+        var $addAddress = $('<button type="button" class="btn btn-xs btn-blue pull-right" style="margin-right: 10px;">Ajouter une adresse</button>');
+        $('#adresses .panel-heading').append($addAddress);
+
+        $addAddress.on('click', function(e) {
+            e.preventDefault();
+            addTranslationForm(collectionHolder);
+        });
+        addTranslationForm(collectionHolder);
+
+        function addTranslationForm(collectionHolder) {
+            var prototype = collectionHolder.attr('data-prototype');
+            var num = collectionHolder.children().length + 1;
+            var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
+            var newForm = $("<div class='activity blue icon'><span><i class='fa fa-envelope'></i></span><div class='activity-desk'><div class='panel'><div class='panel-body'><div class='arrow'></div><h4>Adresse " + num + "</h4>" + newForm + "</div></div></div></div>");
+
+            collectionHolder.append(newForm);
+
+            newForm.find('.panel-body').each(function() {
+                addTranslationFormDeleteLink($(this));
+            });
+        }
+
+        function addTranslationFormDeleteLink($translationFormLi) {
+            var $removeFormA = $('<div class="col-sm-12" style="margin-top: 15px;"><button type="button" class="btn btn-danger btn-sm pull-right">Supprimer</button></div>');
+            $translationFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                e.preventDefault();
+                $translationFormLi.parentsUntil('.activity').parent().remove();
+            });
+        }
+    </script>
+{% endblock %}
+
+
+
+
+
+

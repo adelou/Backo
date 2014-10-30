@@ -1,0 +1,23 @@
+{% extends 'AppAdminBundle:Layout:admin.html.twig' %}
+{% form_theme edit_form 'AppAdminBundle:Form:fields.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="clearfix">
+                        Modifier l'utilisateur
+                    </div>
+                </header>
+                {{ form(edit_form) }}
+            </section>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <a href="{{ path('user_list') }}" class="btn btn-shadow btn-default"><i class="fa fa-arrow-left"></i> Retour</a>
+        <button onclick="deleteModal('{{ path('user_delete' , {'id' : entity.id}) }}', 'êtes vous sûr de vouloir supprimer l\'utilisateur {{ entity.username }} ?');" class="btn btn-shadow btn-danger"><i class="fa fa-trash-o"></i> Supprimer</button>
+        <button type="submit" class="btn btn-shadow btn-success pull-right"><i class="fa fa-save"></i> Modifier</button>
+    </div>
+    {{ include ('AppAdminBundle:Modal:delete.html.twig') }}
+{% endblock %}

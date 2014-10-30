@@ -1,0 +1,100 @@
+{% extends 'AppAdminBundle:Layout:admin.html.twig' %}
+{% form_theme form 'AppAdminBundle:Form:fields-tabs.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <form class="form-horizontal tasi-form cmxform" method="post" action="{{ path('product_create') }}">
+        <div class="col-md-10">
+            <div class="tab-content">
+                <div id="infos" class="tab-pane active">
+                    <section class="panel">
+                        <header class="panel-heading">
+                                <i class="fa fa-info-circle"></i> Informations
+                        </header>
+                        <div class="panel-body">
+                            {{ form_row(form.name) }}
+                        </div>
+                    </section>
+                </div>
+
+                <div id="product" class="tab-pane">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <i class="fa fa-money"></i> Produits du catalogue
+                        </header>
+                        <div class="panel-body">
+                            {#{{ form_row(form.products) }}#}
+                            {% for product in form.products %}
+                                <li>{{ form_row(product.name) }}</li>
+                            {% endfor %}
+                        </div>
+                    </section>
+                </div>
+
+                <div id="customer" class="tab-pane">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <i class="fa fa-pagelines"></i> Liste des consommateurs
+                        </header>
+                        <div class="panel-body">
+                            {{ form_row(form.customers) }}
+                            {#{{ form_widget(form.categories) }}#}
+                        </div>
+                    </section>
+                </div>
+
+                <div id="country" class="tab-pane">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <i class="fa fa-pagelines"></i> Pays
+                        </header>
+                        <div class="panel-body">
+                            {{ form_row(form.country) }}
+                            {#{{ form_widget(form.country) }}#}
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="col-md-12">
+              <a href="{{ path('catalog') }}" class="btn btn-shadow btn-default"><i class="fa fa-arrow-left"></i> Retour</a>
+              <button type="submit" class="btn btn-shadow btn-success pull-right"><i class="fa fa-save"></i> Enregister</button>
+            </div>
+        </div>
+
+            {{ form_widget(form._token) }}
+        </form>
+        <div class="col-md-2">
+            <ul class="vertical-menu">
+                <li class="active"><a href="#infos" data-toggle="tab"><i class="fa fa-info-circle"></i>  Informations</a></li>
+                <li><a href="#product" data-toggle="tab"><i class="fa fa-money"></i>  Produits du catalogue</a></li>
+                <li><a href="#customer" data-toggle="tab"><i class="fa fa-pagelines"></i> Liste des consommateurs</a></li>
+                <li><a href="#country" data-toggle="tab"><i class="fa fa-pagelines"></i> Gestion des localités</a></li>
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+            
+
+    </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

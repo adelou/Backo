@@ -1,0 +1,59 @@
+app_cms:
+    resource: "@AppCMSBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app_media:
+    resource: "@AppMediaBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+app_language:
+    resource: "@AppLanguageBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+app_user:
+    resource: "@AppUserBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+app_e_commerce:
+    resource: "@AppECommerceBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+app_admin:
+    resource: "@AppAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+    
+root:
+    pattern: /
+    defaults:
+        _controller: AppFrontBundle:Default:index
+        path: /
+        permanent: true
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /admin/profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /admin/register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /admin/resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /admin/profile
+
+fos_user_group:
+    resource: "@FOSUserBundle/Resources/config/routing/group.xml"
+    prefix: /admin/group

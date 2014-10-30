@@ -1,0 +1,7 @@
+services:
+    app.media.twig:
+        class: App\MediaBundle\Twig\MediaExtension
+        arguments:           
+          - "@service_container"
+        tags:
+            - { name: twig.extension }

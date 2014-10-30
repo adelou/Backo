@@ -1,0 +1,45 @@
+{% extends 'AppAdminBundle:Layout:admin.html.twig' %}
+{% form_theme form 'AppAdminBundle:Form:fields.html.twig' %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="panel">
+                <header class="panel-heading">
+                   Tous les messages
+                </header>
+                <div class="panel-body">
+                    <div class="timeline-messages">
+                        {% for message in messages %}
+                        <!-- Comment -->
+                        <div class="msg-time-chat">
+                            <a href="#" class="message-img"><img class="avatar" src="img/chat-avatar.jpg" alt=""></a>
+                            <div class="message-body msg-in">
+                                <span class="arrow"></span>
+                                <div class="text">
+                                    <p class="attribution"><a href="#">{{ message.user.email }}</a> le {{ message.createdAt | date('d/m/Y') }}  à {{ message.createdAt | date('H:i') }}</p>
+                                    <p>{{ message.content }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /comment -->
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    Ajouter un ticket
+                </header>
+                {{ form(form) }}
+            </section>
+        </div>
+    </div>
+{% endblock %}

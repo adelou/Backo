@@ -1,0 +1,138 @@
+{% extends 'AppAdminBundle:Layout:admin.html.twig' %}
+
+{% block body %}
+   <div class="col-lg-12">
+         <section class="panel">
+             <header class="panel-heading">
+                 Édition d'un média 
+             </header>
+            <div class="panel-body">
+                {% if formats is empty %}
+                    <a href="{{ path('croping_new') }}" class="btn btn-info">ajouter un format de crop</a>
+                {% else %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Format de croping</label>
+                        <select id="format_crop" name="format_crop" class="form-control m-bot15">
+                            {% for format in formats %}
+                                <option value="{{ format.slug }}">{{format.name}} ({{format.width}} x {{format.height}}px)</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+
+                    <img width="{{ iImageWith }}" src="{{ asset( media_path ~ entity.path ) }}" id="target" /><br>
+                    <a id="btn-to-sub" class="btn btn-success" onclick="crop({{ entity.id }});">Cropper votre image</a>
+
+            </div>
+
+         </section>
+         <section id="formats" class="panel">
+            <header class="panel-heading">
+                Images cropées
+            </header>
+            <div id="container" class="panel-body">
+               {% if  formats is not empty %} 
+               {% set i = 1 %}
+               <ul class="grid cs-style-3">
+               {% for format in formats %}
+                  <li>
+                    <figure>
+                        <img src="{{ asset(media_path ~ format.slug ~ '/'~ entity.path ) }}" />
+                        <figcaption>
+                            <h3>{{ format.slug }}</h3>
+                            <span>{{ format.width }} x {{ format.height }}</span>
+                        </figcaption>
+                    </figure>
+                  </li>
+               {% endfor %}
+               </ul>
+               {% else %}
+                   Au moins 1 format de crop est necessaire pour pourvoir avoir un rendu               
+               {% endif %}
+            </div>
+         </section>
+   </div>
+
+{% endblock %}
+
+{% block javascripts %} 
+   {{ parent() }}
+   
+   <script language="Javascript">
+
+      var cropTab = [];
+      
+   {% for format in formats %}
+        cropTab['{{format.slug}}_width'] = {{ format.width }};
+        cropTab['{{format.slug}}_height'] = {{ format.height }};
+        cropTab['{{format.slug}}_quality'] = {{ format.quality }};
+        cropTab['{{format.slug}}_ratio'] = {{ format.width / format.height}};
+
+    {% endfor %}  
+       
+       var x    = 0;
+       var y    = 0;
+       var x2   = 0;
+       var y2   = 0;
+       var w    = 0;
+       var h    = 0;
+       var slug = "";
+      var cropw = cropTab['{{formats.0.slug}}_width'];
+      var croph = cropTab['{{formats.0.slug}}_height'];;
+
+     function changeCoords(c)
+     {
+        console.log(c);
+        x  = c.x * {{ dCoeffCrop }};
+        y  = c.y * {{ dCoeffCrop }};
+        x2 = c.x2 * {{ dCoeffCrop }};
+        y2 = c.y2 * {{ dCoeffCrop }};
+        w  = c.w * {{ dCoeffCrop }};
+        h  = c.h * {{ dCoeffCrop }};
+     };
+  
+     function crop($id)
+     {
+        slug = $("#format_crop option:selected").val();
+         $.post("{{path('media_crop')}}", { 
+          ajax_x : x,
+           ajax_y : y,
+            ajax_x2 : x2,
+             ajax_y2 : y2,
+              ajax_w : w,
+               ajax_h : h,
+                ajax_cropw : cropw,
+                 ajax_croph : croph,
+                  ajax_id : $id,
+                   ajax_slug : slug }
+                 )
+                 .done(function(data){
+                    // Redirige vers la le formulaire de modification apres le croping
+                    window.location.href = "{{ path('media_edit', {'id': entity.id}) }}"; 
+                  });
+     }
+     
+
+   $('#target').Jcrop({
+       onSelect: changeCoords,
+       animateTo: [ 0,0,{{ formats.0.width}},{{ formats.0.height}} ],
+       aspectRatio:  cropTab['{{formats.0.slug}}_ratio']
+   },function(){
+       jcrop_api = this;
+   });
+     
+     $("#format_crop").on('change', function(){
+         var name = $("#format_crop option:selected").val();
+         $("#img_width").val(cropTab[name + "_width"]);
+         cropw = cropTab[name + "_width"];
+         $("#img_height").val(cropTab[name + "_height"]);
+         croph = cropTab[name + "_height"];
+         $("#img_quality").val(cropTab[name + "_quality"]);
+         $("#img_name").val(name);
+         jcrop_api.setOptions({
+          aspectRatio: cropTab[name + "_ratio"]
+         });
+     }); 
+     
+   </script>
+  {% endblock %}

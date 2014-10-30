@@ -1,0 +1,6 @@
+services:
+    app.ecommercebundle.sav.ticket:
+        class: App\ECommerceBundle\Form\SAV\TicketType
+        arguments: [@service_container]
+        tags:
+           - { name: form.type, alias: app_ecommercebundle_sav_ticket }

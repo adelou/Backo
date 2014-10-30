@@ -1,0 +1,115 @@
+{% extends 'AppAdminBundle:Layout:admin.html.twig' %}
+{% form_theme form 'AppAdminBundle:Form:fields-tabs.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        {{ form_start(form) }}
+        <div class="col-lg-2">
+            <section class="panel">
+                <ul class="nav nav-pills nav-stacked nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#infos">
+                            <i class="fa fa-user"></i> Informations
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#price">
+                            <i class="fa fa-calendar"></i> Prix
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#image">
+                            <i class="fa fa-edit"></i> Images
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="tab-content">
+            <div id="infos" class="col-lg-10 tab-pane active">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Informations
+                    </header>
+                    <div class="panel-body">
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.reference) }}
+                        {{ form_row(form.quantity) }}
+                        {{ form_row(form.state) }}
+                        {{ form_row(form.category) }}
+                        {{ form_row(form.supplier) }}
+                        <button type="submit" id="app_ecommercebundle_product_form_product_submit" name="app_ecommercebundle_product_form_product[submit]" class="btn btn-success">Créer</button>
+                    </div>
+                </section>
+            </div>
+
+            <div id="price" class="col-lg-10 tab-pane">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Prix
+                    </header>
+                    <div class="panel-body">
+                        {{ form_row(form.price) }}
+                        <button type="submit" id="app_ecommercebundle_product_form_product_submit" name="app_ecommercebundle_product_form_product[submit]" class="btn btn-success">Créer</button>
+                    </div>
+                </section>
+            </div>
+
+            <div id="image" class="col-lg-10 tab-pane">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Images
+                    </header>
+                    <div class="panel-body">
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" id="media-autocomplete" placeholder="rechercher un média">
+                            <ul class="medias" data-prototype="{{ form_widget(form.medias.vars.prototype)|e }}"></ul>
+                            <button type="submit" id="app_ecommercebundle_product_form_product_submit" name="app_ecommercebundle_product_form_product[submit]" class="btn btn-success">Créer</button>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+
+        var collectionHolder = $('ul.medias');
+
+            $( "#media-autocomplete" ).autocomplete({
+                minLength: 0,
+                source: '{{  path('media_ajax',{'type':'image'}) }}',
+                select: function(event, ui) {
+                    event.preventDefault();
+                    console.log(ui.item.value);
+                    var prototype = collectionHolder.attr('data-prototype');
+                    var length = collectionHolder.children().length
+                    var newForm = prototype.replace(/__name__/g, length);
+                     collectionHolder.append(newForm);
+
+                    $("#app_ecommercebundle_product_form_product_medias_" + length).attr('value',ui.item.value);
+
+                }
+            })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $("<li></li>").data("item.autocomplete", item)
+                            .append("<a class='" + item.value + "'></a><a>" + item.img + item.label + "</a>")
+                            .appendTo(ul);
+            };
+
+    </script>
+{% endblock %}
+
+
+
+
+
+

@@ -1,0 +1,142 @@
+{% extends 'AppAdminBundle:Layout:admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/appadmin/js/jstree/themes/default/style.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+
+<div class="col-sm-12">
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="clearfix">
+                Gestion de fichiers
+            </div>
+        </header>
+        <div class="panel-body">
+            <div class="form-horizontal tasi-form">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label" for="categories_q">Rechercher</label>
+                    <div class="col-sm-3">
+                        <input class="form-control" id="categories_q" type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                    <div id="categories">
+                        {{ htmlTree |raw }}
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/appadmin/js/jstree/jstree.min.js') }}" ></script>
+    <script src="{{ asset('bundles/appadmin/js/jstree/plugins/jstree.contextmenu.js') }}" ></script>
+    <script src="{{ asset('bundles/appadmin/js/jstree/plugins/jstree.dnd.js') }}" ></script>
+    <script src="{{ asset('bundles/appadmin/js/jstree/plugins/jstree.unique.js') }}" ></script>
+    <script src="{{ asset('bundles/appadmin/js/jstree/plugins/jstree.types.js') }}" ></script>
+    <script src="{{ asset('bundles/appadmin/js/jstree/plugins/jstree.state.js') }}" ></script>
+    <script src="{{ asset('bundles/appadmin/js/jstree/plugins/jstree.search.js') }}" ></script>
+<script>
+
+    $(function () {
+        $('#categories').jstree({
+            "core" : {
+                "animation" : 0,
+                "check_callback" : true,
+                "themes" : { "stripes" : true }
+
+            },
+            "plugins" : [ "contextmenu", "unique", "dnd", "types", "state", "search"  ],
+            "types" : {
+
+            },
+            "contextmenu" : {
+                items : function( obj ) {
+                    var menu = {};
+                    menu = {
+                        "create" : {
+                            "separator_before"	: true,
+                            "separator_after"	: false,
+                            "label"				: "Créér un dossier",
+                            "action"			: function (data) {
+                                var inst = $.jstree.reference(data.reference),
+                                        obj = inst.get_node(data.reference);
+                                inst.create_node(obj, {}, "last");
+                            }
+                        },
+                        "rename" : {
+                            "separator_before"	: false,
+                            "separator_after"	: false,
+                            "label"				: "Renommer",
+                            "action"			: function (data) {
+                                var inst = $.jstree.reference(data.reference),
+                                        obj = inst.get_node(data.reference);
+                                inst.edit(obj);
+                            }
+                        },
+                        "remove" : {
+                            "separator_before"	: false,
+                            "icon"				: false,
+                            "separator_after"	: false,
+                            "label"				: "Supprimer",
+                            "action"			: function (data) {
+                                var inst = $.jstree.reference(data.reference),
+                                        obj = inst.get_node(data.reference);
+                                if(inst.is_selected(obj)) {
+                                    inst.delete_node(inst.get_selected());
+                                }
+                                else {
+                                    inst.delete_node(obj);
+                                }
+                            }
+                        }
+
+                    }
+                    return menu;
+                }
+            }
+        })
+        .bind("rename_node.jstree", function (e, data) {
+            infos = {};
+            infos.id = data.node.id;
+            infos.name = data.text;
+            infos.action ="rename";
+            $.post('{{ path('filemanager_save') }}', infos)
+        })
+        .bind("delete_node.jstree", function (e, data) {
+            infos = {};
+            infos.id = data.node.id;
+            infos.action ="delete";
+            $.post('{{ path('filemanager_save') }}', infos)
+        })
+        .bind("move_node.jstree", function (e, data) {
+            infos = {};
+            infos.id = data.node.id;
+            infos.parentid = data.parent;
+            infos.position = data.position;
+            infos.old_position = data.old_position;
+            infos.action ="move";
+            $.post('{{ path('filemanager_save') }}', infos)
+        });
+
+        var to = false;
+        $('#categories_q').keyup(function () {
+            if(to) { clearTimeout(to); }
+            to = setTimeout(function () {
+                var v = $('#categories_q').val();
+                $('#categories').jstree(true).search(v);
+            }, 250);
+        });
+
+    });
+
+</script>
+{% endblock %}

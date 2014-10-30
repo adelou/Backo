@@ -1,0 +1,5 @@
+services:
+    app.CMSBundle.services.contentFactory:
+        class: App\CMSBundle\Services\ContentFactory
+        arguments:
+            - "@service_container"
