@@ -104,7 +104,7 @@ class Media extends AbstractDefault
         try {
             $this->file->move($this->getUploadRootDir(), $this->path);
         } catch (Exception $e) {
-            var_dump($e->getMessage());die;
+            //var_dump($e->getMessage());die;
         }
 
         unset($this->file);
