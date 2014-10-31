@@ -30,72 +30,70 @@ class TicketController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
 
         if ($request->isXmlHttpRequest()) {
 
             /* DataTable Parameters*/
-            //$lang = $request->get('lang');
-            $sortCol = $request->get('iSortCol_0');
-            $sortDir = $request->get('iSortDir_0');
-            $start = $request->get('iDisplayStart');
-            $limit = $request->get('iDisplayLength');
+            $parameters['sortCol'] = $request->get('iSortCol_0');
+            $parameters['sortDir'] = $request->get('iSortDir_0');
+            $parameters['filters'] = $request->get('filters');
+            $parameters['start'] = $request->get('iDisplayStart');
+            $parameters['limit'] = $request->get('iDisplayLength');
+            $parameters['sEcho'] = $request->get('sEcho');
+            $parameters['lang'] = $request->get('lang');
+            if(empty($parameters['lang'])) {
+                $parameters['lang'] = $this->container->getParameter('locale');
+            }
 
             /* Columns */
-            $columns = array();
-            $columns[0] = 'id';
-            $columns[1] = 'name';
-            $columns[2] = 'type';
-            $columns[3] = 'state';
-            $columns[4] = 'content';
-            $columns[5] = 'created_at';
+            $columns = array('0' => 'id', '1' => 'name', '2' => 'type', '3' => 'state', '4' => 'content', '5' => 'created_at');
 
-            /* Query Result */
-            $qb = $em->getRepository('AppECommerceBundle:SAV\Ticket')->createQueryBuilder('a');
-            $qb_count = clone $qb;
-            $qb->setFirstResult($start);
-            $qb->setMaxResults($limit);
-            $qb->orderBy('a.'.$columns[$sortCol], $sortDir);
-            $result =  $qb->getQuery()->getResult();
+            /* DatatableValuesArray*/
+            $data = $this->container->get('app.adminbundle.services.admin')->getDatatableValuesArray($parameters, $columns, 'AppECommerceBundle:SAV\Ticket');
+            $data = $this->parseDatatableResult($data, $parameters);
 
-            /* Query Count */
-            $qb_count->select('COUNT(a)');
-            $total =  $qb_count->getQuery()->getSingleScalarResult();
-
-            $output = array(
-                "sEcho" => intval($request->get('sEcho')),
-                "iTotalRecords" => intval($total),
-                "iTotalDisplayRecords" => intval($total),
-                "aaData" => array()
-            );
-
-            /* Parse Result */
-            foreach ($result as $e) {
-                $message = $em->getRepository('AppECommerceBundle:SAV\Message')->getLastMessageTicket($e->getId());
-                $row = array();
-                $row[] = (string) $e->getId();
-                $row[] = "-"; //TODO Customer
-                $row[] = (string) $e->getEmail();
-                $row[] = (string) $e->getType();
-                $row[] = (string) $e->getState();
-                if($message instanceof \App\ECommerceBundle\Entity\SAV\Message) {
-                    $row[] = (string) $message->getContent();
-                    $row[] = (string) $message->getCreatedAt()->format('d/m/Y H:i:s');
-                } else {
-                    $row[] = '-';
-                    $row[] = '-';
-                }
-                $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("ticket_new_message", array('id' => $e->getId())).'"><i class="fa fa-edit"></i></a>
-                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o"></i></a>';
-                $output['aaData'][] = $row ;
-
-            }
+            /* Response */
             $response = new JsonResponse();
-            $response->setData($output);
+            $response->setData($data['output']);
 
             return $response;
         }
     }
+
+    protected function parseDatatableResult($data, $parameters) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($data['result'] as $e) {
+            $message = $em->getRepository('AppECommerceBundle:SAV\Message')->getLastMessageTicket($e->getId());
+            $row = array();
+            $row[] = (string) $e->getId();
+            $row[] = "-";
+            $row[] = (string) $e->getEmail();
+            $row[] = (string) $e->getType();
+            $row[] = (string) $e->getState();
+            if($message instanceof \App\ECommerceBundle\Entity\SAV\Message) {
+                $row[] = (string) $message->getContent();
+                $row[] = (string) $message->getCreatedAt()->format('d/m/Y H:i:s');
+            } else {
+                $row[] = '-';
+                $row[] = '-';
+            }
+            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("ticket_new_message", array('id' => $e->getId())).'"><i class="fa fa-edit"></i></a>
+                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o"></i></a>';$row = array();
+            $row[] = (string) $e->getId();
+            $row[] = (string) $e->getPosition();
+            $languages = Intl::getLanguageBundle()->getLanguageNames($parameters['lang']);
+            (array_key_exists($e->getIsoCode(), $languages)) ? $row[] = (string) $languages[$e->getIsoCode()] : $row[] = "";
+            $row[] = (string) $e->getIsoCode();
+            ($e->getEnabled()==0) ? $row[] = '<span class="label label-danger label-mini"><i class="fa fa-times"></i></span>' : $row[] = '<span class="label label-success label-mini"><i class="fa fa-check"></i></span>';
+            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("language_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
+                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
+            $data['output']['aaData'][] = $row ;
+        }
+        return $data;
+    }
+
     /**
      * Creates a new Ticket entity.
      *

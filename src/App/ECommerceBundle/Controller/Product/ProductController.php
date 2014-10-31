@@ -33,64 +33,53 @@ class ProductController extends Controller
     public function indexAction(Request $request)
     {
 
-        $em = $this->getDoctrine()->getManager();
-
         if ($request->isXmlHttpRequest()) {
 
-            $qb = $em->getRepository('AppECommerceBundle:Product\Product')->createQueryBuilder('a');
-            $qb->select('a');
-
-            $filters = $request->get('filters');
-            $lang = $request->get('lang');
-            if(empty($lang)){
-                $lang = $this->container->getParameter('locale');
-            }
-            if(!empty($filters)) {
-                (isset($filters['enabled'])) ? $qb->where("a.enabled = 1") : $qb->where("a.enabled = 0");
-               /* $andModule = $qb->expr()->andx();
-                if(isset($filters['isoCode']) && !empty($filters['isoCode'])) {
-                    $andModule->add($qb->expr()->like('LOWER(a.isoCode)',  $qb->expr()->literal('%'.strtolower(addslashes($filters['isoCode'])).'%')));
-                }
-                $qb->andWhere($andModule);*/
+            /* DataTable Parameters*/
+            $parameters['sortCol'] = $request->get('iSortCol_0');
+            $parameters['sortDir'] = $request->get('iSortDir_0');
+            $parameters['filters'] = $request->get('filters');
+            $parameters['start'] = $request->get('iDisplayStart');
+            $parameters['limit'] = $request->get('iDisplayLength');
+            $parameters['sEcho'] = $request->get('sEcho');
+            $parameters['lang'] = $request->get('lang');
+            if(empty($parameters['lang'])) {
+                $parameters['lang'] = $this->container->getParameter('locale');
             }
 
-            $qb_count = clone $qb;
-            $qb->setFirstResult($request->get('iDisplayStart'));
-            $qb->setMaxResults($request->get('iDisplayLength'));
-            $result =  $qb->getQuery()->getResult();
+            /* Columns */
+            $columns = array('0' => 'id', '1' => 'position', '2' => 'name');
 
-            $qb_count->select('COUNT(a)');
-            $total =  $qb_count->getQuery()->getSingleScalarResult();
+            /* DatatableValuesArray*/
+            $data = $this->container->get('app.adminbundle.services.admin')->getDatatableValuesArray($parameters, $columns, 'AppECommerceBundle:Product\Product');
+            $data = $this->parseDatatableResult($data, $parameters);
 
-            $output = array(
-                "sEcho" => intval($request->get('sEcho')),
-                "iTotalRecords" => intval($total),
-                "iTotalDisplayRecords" => intval($total),
-                "aaData" => array()
-            );
-
-            foreach ($result as $e) {
-                $row   = array();
-                $row[] = (string) $e->getId();
-                $row[] = (string) $e->getPosition();
-                $row[] = (string) $e->getName();
-                $row[] = "";//TODO
-                $row[] = "";//TODO
-                $row[] = "";//TODO
-                $row[] = "";//TODO SLUG
-                $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("product_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
-                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
-                $output['aaData'][] = $row ;
-
-            }
+            /* Response */
             $response = new JsonResponse();
-            $response->setData($output);
+            $response->setData($data['output']);
 
             return $response;
         }
-
-
     }
+
+    protected function parseDatatableResult($data) {
+
+        foreach ($data['result'] as $e) {
+            $row   = array();
+            $row[] = (string) $e->getId();
+            $row[] = (string) $e->getPosition();
+            $row[] = (string) $e->getName();
+            $row[] = "";
+            $row[] = "";
+            $row[] = "";
+            $row[] = "";
+            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("product_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
+                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
+            $data['output']['aaData'][] = $row ;
+        }
+        return $data;
+    }
+
     /**
      * Creates a new Product\Product entity.
      *

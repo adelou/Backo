@@ -10,8 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\MediaBundle\Entity\Media;
 use App\MediaBundle\Form\Type\MediaType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Media controller.
@@ -35,59 +35,45 @@ class MediaController extends Controller
         if ($request->isXmlHttpRequest()) {
 
             /* DataTable Parameters*/
-            //$filters = $request->get('filters');
-            $lang = $request->get('lang');
-            if(empty($lang)){$lang = $this->container->getParameter('locale');}
-            $sortCol = $request->get('iSortCol_0');
-            $sortDir = $request->get('iSortDir_0');
-            $start = $request->get('iDisplayStart');
-            $limit = $request->get('iDisplayLength');
+            $parameters['sortCol'] = $request->get('iSortCol_0');
+            $parameters['sortDir'] = $request->get('iSortDir_0');
+            $parameters['filters'] = $request->get('filters');
+            $parameters['start'] = $request->get('iDisplayStart');
+            $parameters['limit'] = $request->get('iDisplayLength');
+            $parameters['sEcho'] = $request->get('sEcho');
+            $parameters['lang'] = $request->get('lang');
+            if(empty($parameters['lang'])) {
+                $parameters['lang'] = $this->container->getParameter('locale');
+            }
 
             /* Columns */
-            $columns = array();
-            $columns[0] = 'id';
-            $columns[1] = 'type';
-            $columns[2] = 'name';
+            $columns = array('0' => 'id', '1' => 'type', '2' => 'name');
 
-            /* Query Result */
-            $qb = $em->getRepository('AppMediaBundle:Media')->createQueryBuilder('a');
-            $qb_count = clone $qb;
-            $qb->setFirstResult($start);
-            $qb->setMaxResults($limit);
-            $qb->orderBy('a.'.$columns[$sortCol], $sortDir);
-            $result =  $qb->getQuery()->getResult();
+            /* DatatableValuesArray*/
+            $data = $this->container->get('app.adminbundle.services.admin')->getDatatableValuesArray($parameters, $columns, 'AppMediaBundle:Media');
+            $data = $this->parseDatatableResult($data);
 
-            /* Query Count */
-            $qb_count->select('COUNT(a)');
-            $total =  $qb_count->getQuery()->getSingleScalarResult();
-
-            $output = array(
-                "sEcho" => intval($request->get('sEcho')),
-                "iTotalRecords" => intval($total),
-                "iTotalDisplayRecords" => intval($total),
-                "aaData" => array()
-            );
-
-            /* Parse Result */
-            foreach ($result as $e) {
-                $row = array();
-                $row[] = (string) $e->getId();
-                $row[] = (string) $e->getType();
-                $row[] = (string) $e->getName();
-
-
-                $row[] = $this->container->get('app.media.twig')->formatImage($e, 'thumb', 50);
-                $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("media_edit", array('id' => $e->getId())).'"><i class="fa fa-crop"></i></a>
-                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
-                $output['aaData'][] = $row ;
-
-
-            }
+            /* Response */
             $response = new JsonResponse();
-            $response->setData($output);
+            $response->setData($data['output']);
 
             return $response;
         }
+    }
+
+    protected function parseDatatableResult($data) {
+
+        foreach ($data['result'] as $e) {
+            $row = array();
+            $row[] = (string) $e->getId();
+            $row[] = (string) $e->getType();
+            $row[] = (string) $e->getName();
+            $row[] = $this->container->get('app.media.twig')->formatImage($e, 'thumb', 50);
+            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("media_edit", array('id' => $e->getId())).'"><i class="fa fa-crop"></i></a>
+                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
+            $data['output']['aaData'][] = $row ;
+        }
+        return $data;
     }
 
     /**
@@ -101,6 +87,23 @@ class MediaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $request = $this->get('request');
+
+        $filesystem = new Filesystem();
+        //var_dump($this->get('kernel')->getRootDir() . '/../web/uploads/medias');die;
+        if($filesystem->exists($this->get('kernel')->getRootDir() . '/../web/uploads') === false) {
+            try {
+                $filesystem->mkdir($this->get('kernel')->getRootDir() . '/../web/uploads', 0700);
+            } catch (IOException $e) {
+                echo "An error occured while creating your directory";
+            }
+        }
+        if($filesystem->exists($this->get('kernel')->getRootDir() . '/../web/uploads/medias') === false) {
+            try {
+                $filesystem->mkdir($this->get('kernel')->getRootDir() . '/../web/uploads/medias', 0700);
+            } catch (IOException $e) {
+                echo "An error occured while creating your directory";
+            }
+        }
 
         $files = $request->files;
 
@@ -122,8 +125,16 @@ class MediaController extends Controller
                 $newWidth = round(50 / $aDataImageOrigin[1] * $aDataImageOrigin[0]);
                 $newHeight = 50;
             }
-            $dest = $media->getUploadRootDir() . '/thumb/' . $media->getPath();
-            $this->cropAction($request, 0, 0, $newWidth, $newHeight, $aDataImageOrigin[0], $aDataImageOrigin[1], null, "thumb", $src, $extension, $dest, false);
+
+            $parameters = array(
+                'x' => 0, 'y' => 0,
+                'w' => $aDataImageOrigin[0], 'h' => $aDataImageOrigin[1],
+                'w_new' => $newWidth, 'h_new' => $newHeight,
+                'src' => $src, 'slug' => "thumb", 'quality' => 100,
+                'extension' => $extension,  'ajax' => false, 'path' => $media->getPath()
+            );
+
+            $this->container->get('app.media.services.media')->getCrop($parameters);
         }
 
         $output = array();
@@ -322,98 +333,16 @@ class MediaController extends Controller
      * @Method("POST")
      * @Template()
      */
-    public function cropAction(Request $request, $x = 0, $y = 0, $w_new = 0, $h_new = 0, $w = 0, $h = 0, $id = null, $slug = "", $src = "", $extension = "", $destcrop = "", $ajax = true, $path = null)
+    public function cropAction(Request $request)
     {
-        $em      = $this->getDoctrine()->getManager();
-        $jpeg_quality = 100;
-
-        $filesystem = new Filesystem();
-        if($filesystem->exists( $this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug) === false) {
-            try {
-                $filesystem->mkdir($this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug, 0700);
-            } catch (IOException $e) {
-                echo "An error occured while creating your directory";
-            }
+        if($request->isXmlHttpRequest()) {
+            $parameters = $request->request->get('parameters');
+            $this->container->get('app.media.services.media')->getCrop($parameters);
         }
 
-        if($request->isXmlHttpRequest() && $ajax === true) {
-            $x       = $request->get('ajax_x');
-            $y       = $request->get('ajax_y');
-            $w_new       = $request->get('ajax_cropw');
-            $h_new       = $request->get('ajax_croph');
-            $w       = $request->get('ajax_w');
-            $h       = $request->get('ajax_h');
-            $id      = $request->get('ajax_id');
-            $slug    = $request->get('ajax_slug');
+        $response = new JsonResponse();
+        return $response;
 
-            $entity = $em->getRepository('AppMediaBundle:Media')->find($id);
-            $src       = $this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $entity->getPath();
-
-            $extension = pathinfo($src, PATHINFO_EXTENSION);
-            $destcrop = $this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug . '/' . $entity->getPath();
-            $path = $entity->getPath();
-
-            $filesystem = new Filesystem();
-            if($filesystem->exists( $this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug) === false) {
-                try {
-                    $filesystem->mkdir($this->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $slug, 0700);
-                } catch (IOException $e) {
-                    echo "An error occured while creating your directory";
-                }
-            }
-
-
-        }
-
-            switch ($extension) {
-                case 'jpg':
-                    $img_r = imagecreatefromjpeg($src);
-                    break;
-                case 'jpeg':
-                    $img_r = imagecreatefromjpeg($src);
-                    break;
-                case 'gif':
-                    $img_r = imagecreatefromgif($src);
-                    break;
-                case 'png':
-                    $img_r = imagecreatefrompng($src);
-                    break;
-                default:
-                    echo "L'image n'est pas dans un format reconnu. Extensions autorisÃ©es : jpg, jpeg, gif, png";
-                    break;
-            }
-            $dst_r = imagecreatetruecolor($w_new, $h_new);
-            imagecopyresampled($dst_r, $img_r, 0, 0, $x, $y, $w_new, $h_new, $w, $h);
-            
-            switch ($extension) {
-                case 'jpg':
-                    imagejpeg($dst_r, $destcrop , $jpeg_quality);
-                    break;
-                case 'jpeg':
-                    imagejpeg($dst_r, $destcrop , $jpeg_quality);
-                    break;
-                case 'gif':
-                    imagegif($dst_r, $destcrop);
-                    break;
-                case 'png':
-                    imagepng($dst_r, $destcrop);
-                    break;
-                default:
-                    echo "L'image n'est pas dans un format reconnu. Extensions autorisÃ©es : jpg, gif, png";
-                    break;
-            }
-            @chmod($destcrop, 0777);
-            
-            $response = new JsonResponse();
-            
-            $response->setData(array(
-                
-                'path' => $path
-            ));
-            
-            return $response;
-
-        
     }
 
     /**

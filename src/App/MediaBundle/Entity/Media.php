@@ -131,7 +131,8 @@ class Media extends AbstractDefault
     public function getUploadRootDir()
     {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return $this->get('kernel')->getRootDir().'/../web/'.$this->getUploadDir();
+        //return $this->get('kernel')->getRootDir().'/../web/'.$this->getUploadDir();
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
     }
 
     protected function getUploadDir()

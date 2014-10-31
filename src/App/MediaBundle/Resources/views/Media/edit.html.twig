@@ -22,9 +22,7 @@
 
                     <img width="{{ iImageWith }}" src="{{ asset( media_path ~ entity.path ) }}" id="target" /><br>
                     <a id="btn-to-sub" class="btn btn-success" onclick="crop({{ entity.id }});">Cropper votre image</a>
-
             </div>
-
          </section>
          <section id="formats" class="panel">
             <header class="panel-heading">
@@ -60,68 +58,64 @@
    
    <script language="Javascript">
 
-      var cropTab = [];
+    var cropTab = [];
       
-   {% for format in formats %}
+    {% for format in formats %}
         cropTab['{{format.slug}}_width'] = {{ format.width }};
         cropTab['{{format.slug}}_height'] = {{ format.height }};
         cropTab['{{format.slug}}_quality'] = {{ format.quality }};
         cropTab['{{format.slug}}_ratio'] = {{ format.width / format.height}};
-
-    {% endfor %}  
+    {% endfor %}
        
-       var x    = 0;
-       var y    = 0;
-       var x2   = 0;
-       var y2   = 0;
-       var w    = 0;
-       var h    = 0;
-       var slug = "";
-      var cropw = cropTab['{{formats.0.slug}}_width'];
-      var croph = cropTab['{{formats.0.slug}}_height'];;
+    var x    = 0;
+    var y    = 0;
+    var x2   = 0;
+    var y2   = 0;
+    var w    = 0;
+    var h    = 0;
+    var slug = "";
+    var cropw = cropTab['{{formats.0.slug}}_width'];
+    var croph = cropTab['{{formats.0.slug}}_height'];;
 
-     function changeCoords(c)
-     {
-        console.log(c);
+    function changeCoords(c)
+    {
         x  = c.x * {{ dCoeffCrop }};
         y  = c.y * {{ dCoeffCrop }};
         x2 = c.x2 * {{ dCoeffCrop }};
         y2 = c.y2 * {{ dCoeffCrop }};
         w  = c.w * {{ dCoeffCrop }};
         h  = c.h * {{ dCoeffCrop }};
-     };
+    }
   
-     function crop($id)
-     {
-        slug = $("#format_crop option:selected").val();
-         $.post("{{path('media_crop')}}", { 
-          ajax_x : x,
-           ajax_y : y,
-            ajax_x2 : x2,
-             ajax_y2 : y2,
-              ajax_w : w,
-               ajax_h : h,
-                ajax_cropw : cropw,
-                 ajax_croph : croph,
-                  ajax_id : $id,
-                   ajax_slug : slug }
-                 )
-                 .done(function(data){
-                    // Redirige vers la le formulaire de modification apres le croping
-                    window.location.href = "{{ path('media_edit', {'id': entity.id}) }}"; 
-                  });
-     }
-     
+    function crop($id)
+    {
+        $parameters = {};
+        $parameters.x = x;
+        $parameters.y = y;
+        $parameters.w = w;
+        $parameters.h = h;
+        $parameters.w_new = w_new;
+        $parameters.h_new = h_new;
+        $parameters.slug = $("#format_crop option:selected").val();
+        $parameters.extension = {{ entity.extension }};
+        $parameters.path = {{ entity.path }};
+        $parameters.quality = 100;
 
-   $('#target').Jcrop({
-       onSelect: changeCoords,
-       animateTo: [ 0,0,{{ formats.0.width}},{{ formats.0.height}} ],
-       aspectRatio:  cropTab['{{formats.0.slug}}_ratio']
-   },function(){
-       jcrop_api = this;
-   });
-     
-     $("#format_crop").on('change', function(){
+        $.post("{{path('media_crop')}}", $parameters).done(function(data){
+            window.location.href = "{{ path('media_edit', {'id': entity.id}) }}";
+        });
+   }
+
+
+    $('#target').Jcrop({
+        onSelect: changeCoords,
+        animateTo: [ 0,0,{{ formats.0.width}},{{ formats.0.height}} ],
+        aspectRatio:  cropTab['{{formats.0.slug}}_ratio']
+    },function(){
+        jcrop_api = this;
+    });
+
+    $("#format_crop").on('change', function(){
          var name = $("#format_crop option:selected").val();
          $("#img_width").val(cropTab[name + "_width"]);
          cropw = cropTab[name + "_width"];
@@ -132,7 +126,7 @@
          jcrop_api.setOptions({
           aspectRatio: cropTab[name + "_ratio"]
          });
-     }); 
+    });
      
    </script>
   {% endblock %}

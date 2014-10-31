@@ -28,74 +28,53 @@ class CountryController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
 
         if ($request->isXmlHttpRequest()) {
 
             /* DataTable Parameters*/
-            $filters = $request->get('filters');
-            $lang = $request->get('lang');
-            if(empty($lang)){$lang = $this->container->getParameter('locale');}
-            $sortCol = $request->get('iSortCol_0');
-            $sortDir = $request->get('iSortDir_0');
-            $start = $request->get('iDisplayStart');
-            $limit = $request->get('iDisplayLength');
+            $parameters['sortCol'] = $request->get('iSortCol_0');
+            $parameters['sortDir'] = $request->get('iSortDir_0');
+            $parameters['filters'] = $request->get('filters');
+            $parameters['start'] = $request->get('iDisplayStart');
+            $parameters['limit'] = $request->get('iDisplayLength');
+            $parameters['sEcho'] = $request->get('sEcho');
+            $parameters['lang'] = $request->get('lang');
+            if(empty($parameters['lang'])) {
+                $parameters['lang'] = $this->container->getParameter('locale');
+            }
 
             /* Columns */
-            $columns = array();
-            $columns[0] = 'id';
-            $columns[1] = 'position';
-            $columns[2] = 'isoCode';
-            $columns[3] = 'isoCode';
-            $columns[4] = 'enabled';
+            $columns = array('0' => 'id', '1' => 'position', '2' => 'isoCode', '3' => 'isoCode', '4' => 'enabled');
 
-            /* Query Result */
-            $qb = $em->getRepository('AppLanguageBundle:Country')->createQueryBuilder('a');
-            $qb->select('a');
-            if(!empty($filters)) {
-                (isset($filters[$columns[4]])) ? $qb->where('a.'.$columns[4].' = 1') : $qb->where('a.'.$columns[4].' = 0');
-                $andModule = $qb->expr()->andx();
-                if(isset($filters[$columns[2]]) && !empty($filters[$columns[2]])) {
-                    $andModule->add($qb->expr()->like('LOWER(a.'.$filters[$columns[2]].')',  $qb->expr()->literal('%'.strtolower(addslashes($filters[$columns[2]])).'%')));
-                }
-                $qb->andWhere($andModule);
-            }
-            $qb_count = clone $qb;
-            $qb->setFirstResult($start);
-            $qb->setMaxResults($limit);
-            $qb->orderBy('a.'.$columns[$sortCol], $sortDir);
-            $result =  $qb->getQuery()->getResult();
+            /* DatatableValuesArray*/
+            $data = $this->container->get('app.adminbundle.services.admin')->getDatatableValuesArray($parameters, $columns, 'AppLanguageBundle:Country');
+            $data = $this->parseDatatableResult($data, $parameters);
 
-            /* Query Count */
-            $qb_count->select('COUNT(a)');
-            $total =  $qb_count->getQuery()->getSingleScalarResult();
-
-            $output = array(
-                "sEcho" => intval($request->get('sEcho')),
-                "iTotalRecords" => intval($total),
-                "iTotalDisplayRecords" => intval($total),
-                "aaData" => array()
-            );
-
-            /* Parse Result */
-            foreach ($result as $e) {
-                $row = array();
-                $row[] = (string) $e->getId();
-                $row[] = (string) $e->getPosition();
-                $row[] = (string) $this->container->get('app.language.twig')->country($e->getIsoCode(), $lang);
-                $row[] = (string) $e->getIsoCode();
-                ($e->getEnabled()==0) ? $row[] = '<span class="label label-danger label-mini"><i class="fa fa-times"></i></span>' : $row[] = '<span class="label label-success label-mini"><i class="fa fa-check"></i></span>';
-                $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("country_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
-                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
-                $output['aaData'][] = $row ;
-
-            }
+            /* Response */
             $response = new JsonResponse();
-            $response->setData($output);
+            $response->setData($data['output']);
 
             return $response;
         }
     }
+
+    protected function parseDatatableResult($data, $parameters) {
+
+        foreach ($data['result'] as $e) {
+            $row = array();
+            $row[] = (string) $e->getId();
+            $row[] = (string) $e->getPosition();
+            $row[] = (string) $this->container->get('app.language.twig')->country($e->getIsoCode(), $parameters['lang']);
+            $row[] = (string) $e->getIsoCode();
+            ($e->getEnabled()==0) ? $row[] = '<span class="label label-danger label-mini"><i class="fa fa-times"></i></span>' : $row[] = '<span class="label label-success label-mini"><i class="fa fa-check"></i></span>';
+            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("country_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
+                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
+            $data['output']['aaData'][] = $row ;
+
+        }
+        return $data;
+    }
+
     /**
      * Creates a new Country entity.
      *

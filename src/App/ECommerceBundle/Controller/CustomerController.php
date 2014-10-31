@@ -30,58 +30,65 @@ class CustomerController extends Controller
     public function indexAction(Request $request)
     {
 
-        $em = $this->getDoctrine()->getManager();
-
         if ($request->isXmlHttpRequest()) {
 
-            $qb = $em->getRepository('AppECommerceBundle:Customer')->createQueryBuilder('a');
-            $qb->select('a');
-
-
-
-            $qb_count = clone $qb;
-            $qb->setFirstResult($request->get('iDisplayStart'));
-            $qb->setMaxResults($request->get('iDisplayLength'));
-            $result =  $qb->getQuery()->getResult();
-
-            $qb_count->select('COUNT(a)');
-            $total =  $qb_count->getQuery()->getSingleScalarResult();
-
-            $output = array(
-                "sEcho" => intval($request->get('sEcho')),
-                "iTotalRecords" => intval($total),
-                "iTotalDisplayRecords" => intval($total),
-                "aaData" => array()
-            );
-
-            foreach ($result as $e) {
-                $row   = array();
-                $row[] = (string) $e->getId();
-                $row[] = (string) $e->getGender();
-                $row[] = (string) $e->getUser()->getFirstname();
-                $row[] = (string) $e->getUser()->getLastname();
-                $row[] = (string) $e->getUser()->getEmail();
-                $row[] = (string) $e->getNewsletter();
-                if(is_object($e->getUser()->getLastLogin())) {
-                    $row[] = (string) $e->getUser()->getLastLogin()->format('d/M/Y H:m:i');
-                } else {
-                    $row[] = "-";
-                }
-
-
-                $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("customer_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
-                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
-                $output['aaData'][] = $row ;
-
+            /* DataTable Parameters*/
+            $parameters['sortCol'] = $request->get('iSortCol_0');
+            $parameters['sortDir'] = $request->get('iSortDir_0');
+            $parameters['filters'] = $request->get('filters');
+            $parameters['start'] = $request->get('iDisplayStart');
+            $parameters['limit'] = $request->get('iDisplayLength');
+            $parameters['sEcho'] = $request->get('sEcho');
+            $parameters['lang'] = $request->get('lang');
+            if(empty($parameters['lang'])) {
+                $parameters['lang'] = $this->container->getParameter('locale');
             }
+
+            /* Columns */
+            $columns = array('0' => 'id', '1' => 'gender', '2' => 'firstname', '3' => 'lastname', '4' => 'email', '5' => 'newsletter', '6' => 'lastLogin');
+
+            /* DatatableValuesArray*/
+            $data = $this->container->get('app.adminbundle.services.admin')->getDatatableValuesArray($parameters, $columns, 'AppECommerceBundle:Customer');
+            $data = $this->parseDatatableResult($data, $parameters);
+
+            /* Response */
             $response = new JsonResponse();
-            $response->setData($output);
+            $response->setData($data['output']);
 
             return $response;
         }
-
-
     }
+
+    protected function parseDatatableResult($data, $parameters) {
+
+        foreach ($data['result'] as $e) {
+            $row   = array();
+            $row[] = (string) $e->getId();
+            $row[] = (string) $e->getGender();
+            $row[] = (string) $e->getUser()->getFirstname();
+            $row[] = (string) $e->getUser()->getLastname();
+            $row[] = (string) $e->getUser()->getEmail();
+            $row[] = (string) $e->getNewsletter();
+            if(is_object($e->getUser()->getLastLogin())) {
+                $row[] = (string) $e->getUser()->getLastLogin()->format('d/M/Y H:m:i');
+            } else {
+                $row[] = "-";
+            }
+            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("customer_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
+                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';$row = array();
+            $row[] = (string) $e->getId();
+            $row[] = (string) $e->getPosition();
+            $languages = Intl::getLanguageBundle()->getLanguageNames($parameters['lang']);
+            (array_key_exists($e->getIsoCode(), $languages)) ? $row[] = (string) $languages[$e->getIsoCode()] : $row[] = "";
+            $row[] = (string) $e->getIsoCode();
+            ($e->getEnabled()==0) ? $row[] = '<span class="label label-danger label-mini"><i class="fa fa-times"></i></span>' : $row[] = '<span class="label label-success label-mini"><i class="fa fa-check"></i></span>';
+            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("language_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
+                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
+            $data['output']['aaData'][] = $row ;
+        }
+        return $data;
+    }
+
     /**
      * Creates a new Customer entity.
      *

@@ -5,3 +5,8 @@ services:
           - "@service_container"
         tags:
             - { name: twig.extension }
+
+    app.media.services.media:
+            class: App\MediaBundle\Services\MediaService
+            arguments:
+              - "@service_container"
