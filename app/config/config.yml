@@ -19,7 +19,9 @@ framework:
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
-    session:         ~
+    session:
+        handler_id: session.handler.native_file
+        save_path: "%kernel.root_dir%/sessions"
     fragments:       ~
     http_method_override: true
     
@@ -113,8 +115,12 @@ parameters:
 twig:
     globals:
         filemanager_path: "uploads"
-        media_path: "uploads/medias/"
-        media_absolute_path: "/BackOfficeCurrentGit/BackOfficeCustom/web/uploads/medias/"
+        thumb_name: "thumb"
+        thumb_slug: "thumb"
+        thumb_width: 50
+        thumb_height: 50
+        thumb_ratio: 1
+        thumb_quality: 100
 
 jms_security_extra:
     # Whether you want to secure all services (true), or only secure specific

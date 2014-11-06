@@ -20,10 +20,11 @@ class PageMeta
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="App\CMSBundle\Entity\Page")
-     */
+     * @ORM\ManyToOne(targetEntity="App\CMSBundle\Entity\Page", inversedBy="pageMetas")
+     * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
+     * */
     private $page;
 
     /**

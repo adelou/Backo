@@ -22,7 +22,7 @@ class Article extends AbstractContent
     private $id;
     
     /**
-     * @ORM\OneToMany(targetEntity="App\CMSBundle\Entity\ArticleMeta", mappedBy="article")
+     * @ORM\OneToMany(targetEntity="App\CMSBundle\Entity\ArticleMeta", mappedBy="article", cascade={"all"})
      */
     private $articleMetas;
 

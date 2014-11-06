@@ -23,7 +23,7 @@ class Page extends AbstractContent
     private $id;
     
      /**
-     * @ORM\OneToMany(targetEntity="App\CMSBundle\Entity\PageMeta", mappedBy="page")
+     * @ORM\OneToMany(targetEntity="App\CMSBundle\Entity\PageMeta", mappedBy="page" , cascade={"all"})
      */
     private $pageMetas;
 

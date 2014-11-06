@@ -90,9 +90,15 @@
     var w    = 0;
     var h    = 0;
     var slug = "";
-    var w_new = cropTab['{{formats.0.slug}}_width'];
-    var h_new = cropTab['{{formats.0.slug}}_height'];
-    var quality = cropTab['{{formats.0.slug}}_quality'];
+    {% if formats is empty %}
+        var w_new = cropTab['thumb_width'];
+        var h_new = cropTab['thumb_height'];
+        var quality = cropTab['thumb_quality'];
+    {% else %}
+        var w_new = cropTab['{{formats.0.slug}}_width'];
+        var h_new = cropTab['{{formats.0.slug}}_height'];
+        var quality = cropTab['{{formats.0.slug}}_quality'];
+    {% endif %}
 
     function changeCoords(c)
     {
@@ -123,14 +129,23 @@
         });
    }
 
-
-    $('#target').Jcrop({
-        onSelect: changeCoords,
-        animateTo: [ 0,0,{{ formats.0.width}},{{ formats.0.height}} ],
-        aspectRatio:  cropTab['{{formats.0.slug}}_ratio']
-    },function(){
-        jcrop_api = this;
-    });
+    {% if formats is empty %}
+        $('#target').Jcrop({
+            onSelect: changeCoords,
+            animateTo: [ 0,0,cropTab['thumb_width'],cropTab['thumb_height'] ],
+            aspectRatio:  cropTab['thumb_ratio']
+        },function(){
+            jcrop_api = this;
+        });
+    {% else %}
+        $('#target').Jcrop({
+            onSelect: changeCoords,
+            animateTo: [ 0,0,{{ formats.0.width}},{{ formats.0.height}} ],
+            aspectRatio:  cropTab['{{formats.0.slug}}_ratio']
+        },function(){
+            jcrop_api = this;
+        });
+    {% endif %}
 
     $("#format_crop").on('change', function(){
          var name = $("#format_crop option:selected").val();

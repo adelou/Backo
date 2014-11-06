@@ -20,10 +20,11 @@ class ArticleMeta
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
-     * @ORM\ManyToOne(targetEntity="App\CMSBundle\Entity\Article")
-     */
+     * @ORM\ManyToOne(targetEntity="App\CMSBundle\Entity\Article", inversedBy="articleMetas")
+     * @ORM\JoinColumn(name="article_id", referencedColumnName="id")
+     * */
     private $article;
     /**
      * @var string

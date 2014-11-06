@@ -46,7 +46,7 @@ class MediaService
                 break;
         }
         $dst_r = imagecreatetruecolor($parameters['w_new'], $parameters['h_new']);
-        if($parameters['extension'] == "gif" or $parameters['extension'] == "png"){
+        if($parameters['extension'] == "gif" || $parameters['extension'] == "png"){
             imagecolortransparent($dst_r, imagecolorallocatealpha($dst_r, 0, 0, 0, 127));
             imagealphablending($dst_r, false);
             imagesavealpha($dst_r, true);
