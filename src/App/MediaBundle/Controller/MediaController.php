@@ -30,7 +30,6 @@ class MediaController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
 
         if ($request->isXmlHttpRequest()) {
 
@@ -87,6 +86,7 @@ class MediaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $request = $this->get('request');
+        $output = null;
 
         $filesystem = new Filesystem();
         //var_dump($this->get('kernel')->getRootDir() . '/../web/uploads/medias');die;
@@ -130,20 +130,20 @@ class MediaController extends Controller
                 'x' => 0, 'y' => 0,
                 'w' => $aDataImageOrigin[0], 'h' => $aDataImageOrigin[1],
                 'w_new' => $newWidth, 'h_new' => $newHeight,
-                'src' => $src, 'slug' => "thumb", 'quality' => 100,
+                'slug' => "thumb", 'quality' => 100,
                 'extension' => $extension,  'ajax' => false, 'path' => $media->getPath()
             );
 
-            $this->container->get('app.media.services.media')->getCrop($parameters);
+            $src = $this->container->get('app.media.services.media')->getCrop($parameters);
         }
 
-        $output = array();
-        $output['id'] = $media->getId();
-        $output['name'] = $media->getName();
-        $output['path'] = $media->getPath();
-
         $response = new JsonResponse();
-        $response->setData($output);
+        $response->setData(array(
+            'id' => $media->getId(),
+            'img' => "<img src='/uploads/medias/thumb/".$media->getPath()."' title='".$media->getName()."'/>",
+            'name' => $media->getName(),
+            'type' => $media->getType()
+        ));
 
         return $response;
 
@@ -215,6 +215,9 @@ class MediaController extends Controller
         $aDataImageOrigin = getimagesize($filename);
         
         $iCoeffCrop = $aDataImageOrigin[0] / 500;
+        if($iCoeffCrop < 1){
+            $iCoeffCrop = 1;
+        }
         $iImageWidth =  $aDataImageOrigin[0];
 
         if ( $aDataImageOrigin[0] > 500) {
@@ -441,7 +444,6 @@ class MediaController extends Controller
             $medias_id = $request->request->get('medias_id');
             $repo = $request->request->get('repo');
             $object_id = $request->request->get('id');
-            //$object = $request->request->get('object');
 
             foreach($medias_id as $key => $id) {
                 $entity = $em->getRepository($repo)->findOneBy(array('article' => $object_id, 'media' => $id));

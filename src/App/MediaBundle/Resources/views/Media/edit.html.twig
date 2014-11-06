@@ -7,46 +7,58 @@
                  Édition d'un média 
              </header>
             <div class="panel-body">
-                {% if formats is empty %}
-                    <a href="{{ path('croping_new') }}" class="btn btn-info">ajouter un format de crop</a>
-                {% else %}
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Format de croping</label>
-                        <select id="format_crop" name="format_crop" class="form-control m-bot15">
-                            {% for format in formats %}
-                                <option value="{{ format.slug }}">{{format.name}} ({{format.width}} x {{format.height}}px)</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                {% endif %}
 
-                    <img width="{{ iImageWith }}" src="{{ asset( media_path ~ entity.path ) }}" id="target" /><br>
-                    <a id="btn-to-sub" class="btn btn-success" onclick="crop({{ entity.id }});">Cropper votre image</a>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Format de croping</label>
+                    <select id="format_crop" name="format_crop" class="form-control m-bot15">
+                        {% for format in formats %}
+                            <option value="{{ format.slug }}">{{format.name}} ({{format.width}} x {{format.height}}px)</option>
+                        {% endfor %}
+                        <option value="{{ thumb_slug }}">{{ thumb_name }} ({{thumb_width}} x {{thumb_height}}px)</option>
+                    </select>
+                </div>
+
+                <img width="{{ iImageWith }}" src="/uploads/medias/{{ asset( media_path ~ entity.path ) }}" id="target" /><br>
+                <a id="btn-to-sub" class="btn btn-success" onclick="crop();">Cropper votre image</a>
             </div>
          </section>
-         <section id="formats" class="panel">
+    </div>
+
+    <div class="col-lg-12">
+       <section id="formats" class="panel">
             <header class="panel-heading">
                 Images cropées
             </header>
             <div id="container" class="panel-body">
-               {% if  formats is not empty %} 
-               {% set i = 1 %}
                <ul class="grid cs-style-3">
+                   <table class="table table-striped table-hover table-bordered" id="medias-table">
+                       <thead>
+                       <tr>
+                           <th>slug</th>
+                           <th>Largeur</th>
+                           <th>Hauteur</th>
+                           <th>Visuel</th>
+                       </tr>
+                       </thead>
+                       <tbody>
                {% for format in formats %}
-                  <li>
-                    <figure>
-                        <img src="{{ asset(media_path ~ format.slug ~ '/'~ entity.path ) }}" />
-                        <figcaption>
-                            <h3>{{ format.slug }}</h3>
-                            <span>{{ format.width }} x {{ format.height }}</span>
-                        </figcaption>
-                    </figure>
-                  </li>
+                   <tr>
+                       <td>{{ format.slug }}</td>
+                       <td>{{ format.width }}px</td>
+                       <td>{{ format.height }}px</td>
+                       <td><img src="/uploads/medias{{ asset(media_path ~ format.slug ~ '/'~ entity.path ) }}" /></td>
+                   </tr>
                {% endfor %}
+                   <tr>
+                       <td>{{ thumb_slug }}</td>
+                       <td>{{ thumb_width }}px</td>
+                       <td>{{ thumb_height }}px</td>
+                       <td><img src="/uploads/medias{{ asset(media_path ~ thumb_slug ~ '/'~ entity.path ) }}" /></td>
+                   </tr>
+
+                       </tbody>
+                   </table>
                </ul>
-               {% else %}
-                   Au moins 1 format de crop est necessaire pour pourvoir avoir un rendu               
-               {% endif %}
             </div>
          </section>
    </div>
@@ -59,7 +71,11 @@
    <script language="Javascript">
 
     var cropTab = [];
-      
+    cropTab['thumb_width'] = {{ thumb_width }};
+    cropTab['thumb_height'] = {{ thumb_height }};
+    cropTab['thumb_quality'] = {{ thumb_quality }};
+    cropTab['thumb_ratio'] = {{ thumb_ratio }};
+
     {% for format in formats %}
         cropTab['{{format.slug}}_width'] = {{ format.width }};
         cropTab['{{format.slug}}_height'] = {{ format.height }};
@@ -74,8 +90,9 @@
     var w    = 0;
     var h    = 0;
     var slug = "";
-    var cropw = cropTab['{{formats.0.slug}}_width'];
-    var croph = cropTab['{{formats.0.slug}}_height'];;
+    var w_new = cropTab['{{formats.0.slug}}_width'];
+    var h_new = cropTab['{{formats.0.slug}}_height'];
+    var quality = cropTab['{{formats.0.slug}}_quality'];
 
     function changeCoords(c)
     {
@@ -87,7 +104,7 @@
         h  = c.h * {{ dCoeffCrop }};
     }
   
-    function crop($id)
+    function crop()
     {
         $parameters = {};
         $parameters.x = x;
@@ -97,11 +114,11 @@
         $parameters.w_new = w_new;
         $parameters.h_new = h_new;
         $parameters.slug = $("#format_crop option:selected").val();
-        $parameters.extension = {{ entity.extension }};
-        $parameters.path = {{ entity.path }};
+        $parameters.extension = '{{ entity.extension }}';
+        $parameters.path = '{{ entity.path }}';
         $parameters.quality = 100;
 
-        $.post("{{path('media_crop')}}", $parameters).done(function(data){
+        $.post("{{path('media_crop')}}", {'parameters' : $parameters}).done(function(){
             window.location.href = "{{ path('media_edit', {'id': entity.id}) }}";
         });
    }
@@ -118,10 +135,11 @@
     $("#format_crop").on('change', function(){
          var name = $("#format_crop option:selected").val();
          $("#img_width").val(cropTab[name + "_width"]);
-         cropw = cropTab[name + "_width"];
+        w_new = cropTab[name + "_width"];
          $("#img_height").val(cropTab[name + "_height"]);
-         croph = cropTab[name + "_height"];
+        h_new = cropTab[name + "_height"];
          $("#img_quality").val(cropTab[name + "_quality"]);
+        quality = cropTab[name + "_quality"];
          $("#img_name").val(name);
          jcrop_api.setOptions({
           aspectRatio: cropTab[name + "_ratio"]
