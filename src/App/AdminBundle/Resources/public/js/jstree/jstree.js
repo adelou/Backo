@@ -4813,7 +4813,6 @@
  *
  * Shows a context menu when a node is right-clicked.
  */
-// TODO: move logic outside of function + check multiple move
 
 	/**
 	 * stores all defaults for the contextmenu plugin
@@ -5443,8 +5442,7 @@
 		 */
 		inside_pos : 0
 	};
-	// TODO: now check works by checking for each node individually, how about max_children, unique, etc?
-	// TODO: drop somewhere else - maybe demo only?
+
 	$.jstree.plugins.dnd = function (options, parent) {
 		this.bind = function () {
 			parent.bind.call(this);
@@ -5552,7 +5550,6 @@
 										break;
 								}
 								/*!
-								// TODO: moving inside, but the node is not yet loaded?
 								// the check will work anyway, as when moving the node will be loaded first and checked again
 								if(v === 'i' && !ins.is_loaded(p)) { }
 								*/

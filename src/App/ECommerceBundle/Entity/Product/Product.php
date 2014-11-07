@@ -38,11 +38,6 @@ class Product extends AbstractDefault implements Translatable
     private $medias;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\ECommerceBundle\Entity\Catalog", cascade={"persist"})
-     */
-    private $catalogs;
-
-    /**
      * @var string
      * @Gedmo\Translatable
      * @ORM\Column(name="name", type="string", length=255)
@@ -70,11 +65,6 @@ class Product extends AbstractDefault implements Translatable
      */
     private $locale;
 
-    
-    
-    
-    
-    
     /**
      * Constructor
      */
@@ -185,5 +175,23 @@ class Product extends AbstractDefault implements Translatable
     {
         return $this->name;
     }
+
+    /**
+     * @param mixed $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+
 
 }

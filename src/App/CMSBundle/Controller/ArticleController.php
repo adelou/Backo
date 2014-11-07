@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\CMSBundle\Entity\Article;
-//use App\CMSBundle\Entity\Page;
 use App\CMSBundle\Form\Type\ArticleType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -68,18 +67,7 @@ class ArticleController extends Controller
 
             return $response;
         }
-        
-//        $varTest = new Article();
-//        $varTest->getTitle();
-        //$factory = $this->container->get('app.CMSBundle.services.contentFactory');
 
-        //$instance = $factory->getFactoryTest('page');
-
-        //$entities = $em->getRepository('AppCMSBundle:Article')->findAll();
-
-       //return array(
-       //     'entities' => $entities,
-       //);
     }
 
 

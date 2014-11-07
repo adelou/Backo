@@ -43,7 +43,6 @@ class CatalogController extends Controller
              
             // Recuperation de tout les catalogues et transmission des id au repository 
             $oCatalogRepository = $em->getRepository('AppECommerceBundle:Catalog');
-            //$aAllCatalog = $oCatalogRepository->findAll();
            
             //this doesn't work
             $output = array(

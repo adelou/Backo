@@ -2,11 +2,9 @@
 
 namespace App\ECommerceBundle\Form\DataTransformer;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class ObjecttoCollectionTransformer implements DataTransformerInterface
 {

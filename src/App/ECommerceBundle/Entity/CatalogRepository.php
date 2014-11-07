@@ -19,8 +19,7 @@ class CatalogRepository extends EntityRepository
      *  @return $total : Nombre de catalogue
     */
    public function getTotal($oRequest) {
-       
-        //$qb_count = clone $qb;
+
        
        $qb_count = $this->createQueryBuilder('a');
        $qb_count->select('COUNT(a)');
@@ -31,7 +30,7 @@ class CatalogRepository extends EntityRepository
    
    
    /*
-    * Recupere le nombre de catalogue // TODO confimer avec ADLM
+    * Recupere le nombre de catalogue
     * 
     * @return  $result : catalogue filtré en fonction des paramètres saisies
    */
@@ -39,12 +38,7 @@ class CatalogRepository extends EntityRepository
        
             $qb = $this->createQueryBuilder('a');
             $qb->select('a');
-            
-            //$filters = $oRequest->get('filters');
-            /*$lang = $oRequest->get('lang');
-            if(empty($lang)){
-                $lang = $container->getParameter('locale');
-            }*/
+
             $qb->setFirstResult($oRequest->get('iDisplayStart'));
             $qb->setMaxResults($oRequest->get('iDisplayLength'));
             $result =  $qb->getQuery()->getResult();

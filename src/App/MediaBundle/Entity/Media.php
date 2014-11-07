@@ -85,8 +85,7 @@ class Media extends AbstractDefault
     {
         if (null !== $this->file) {
             // unique name
-            //$this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
-            $this->path = $this->file->getClientOriginalName();
+            $this->path = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
             $this->type = $this->file->getMimeType();
             $this->extension = $this->file->guessExtension();;
             $this->name = $this->file->getClientOriginalName();

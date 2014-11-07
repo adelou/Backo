@@ -2,8 +2,6 @@
 
 namespace App\CMSBundle\Form\Type;
 
-use App\CMSBundle\Entity\ArticleMeta;
-use Doctrine\Common\Cache\ArrayCache;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

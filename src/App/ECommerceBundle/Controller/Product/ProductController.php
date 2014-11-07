@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\Product\Product;
 use App\ECommerceBundle\Form\Type\Product\ProductType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-//use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 
@@ -162,7 +161,6 @@ class ProductController extends Controller
         if(empty($lang)) {$lang = $request->getLocale();}
         $entity->setTranslatableLocale($lang);
         $em->refresh($entity);
-        //$medias = $em->getRepository('AppMediaBundle:Media')->findBy(array('products' => $entity));
 
         $qb = $em->getRepository('AppMediaBundle:Media')->createQueryBuilder('m');
         $qb->select('m');

@@ -10,8 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\MediaBundle\Entity\Media;
 use App\MediaBundle\Form\Type\MediaType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
 use App\MediaBundle\Lib\GlobalsMedia;
 
 /**
@@ -87,7 +85,6 @@ class MediaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $request = $this->get('request');
-        $output = null;
 
         $files = $request->files;
 

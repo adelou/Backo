@@ -2,9 +2,7 @@
 
 namespace App\CMSBundle\Services;
 
-use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use App\CMSBundle\Entity\AbstractContent;
 use App\CMSBundle\Entity\Article;
 use App\CMSBundle\Entity\Page;
 

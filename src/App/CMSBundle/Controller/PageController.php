@@ -32,15 +32,6 @@ class PageController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /*
-         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('AppCMSBundle:Page')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
-        */
 
         $oTransformer = new DateTimeToStringTransformer();
 

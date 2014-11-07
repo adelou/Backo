@@ -234,11 +234,10 @@ class UserController extends Controller
      * Deletes a User entity.
      *
      * @Route("/{id}/delete", name="user_delete")
-     * @Method("POST")
+     * @Method("GET")
      */
     public function deleteAction($id)
     {
-        // TODO ADEL pour Antoine vérifier que ca marche avec POST au lieu de GET
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('AppUserBundle:User')->find($id);
 

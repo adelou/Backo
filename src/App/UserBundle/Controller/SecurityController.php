@@ -33,7 +33,6 @@ class SecurityController extends BaseController
         }
 
         if ($error) {
-            // TODO: this is a potential security risk (see http://trac.symfony-project.org/ticket/9523)
             $error = $error->getMessage();
         }
         // last username entered by the user

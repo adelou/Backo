@@ -5,8 +5,6 @@ namespace App\ECommerceBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use App\ECommerceBundle\Form\DataTransformer\IdtoObjectTransformer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use App\ECommerceBundle\Form\Type\Product\ProductType;
 

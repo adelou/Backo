@@ -29,22 +29,13 @@ class CategoryController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        // TODO Adel => Antoine Supprimé car pas utile ?
-        /*$entities = $em->getRepository('AppAdminBundle:Category')->findAll();
+        $entities = $em->getRepository('AppAdminBundle:Category')->findAll();
         if(empty($entities)) {
             $root = new Category();
             $root->setTitle('root');
             $em->persist($root);
             $em->flush();
         }
-
-        $options = array(
-            'decorate' => true,
-            'rootOpen' => '<ul>',
-            'rootClose' => '</ul>',
-            'childOpen' => '<li>',
-            'childClose' => '</li>'
-        );*/
         $htmlTree = $em->getRepository('AppAdminBundle:Category')->childrenHierarchy(
             null, /* starting from root nodes */
             false, /* true: load all children, false: only direct */
