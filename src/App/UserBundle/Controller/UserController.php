@@ -141,7 +141,7 @@ class UserController extends Controller
      * Displays a form to edit an existing User entity.
      *
      * @Route("/{id}/edit", name="user_edit")
-     * @Method({"GET","POST"})
+     * @Method("GET")
      * @Template("AppUserBundle:User:edit.html.twig")
      */
     public function editAction($id)

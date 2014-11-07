@@ -4,6 +4,7 @@ namespace App\MediaBundle\Services;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use App\MediaBundle\Lib\GlobalsMedia;
+use Symfony\Component\Filesystem\Exception\IOException;
 
 class MediaService
 {

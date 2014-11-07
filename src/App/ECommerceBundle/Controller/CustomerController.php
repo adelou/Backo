@@ -11,6 +11,7 @@ use App\ECommerceBundle\Entity\Customer;
 use App\ECommerceBundle\Form\Type\CustomerType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Util\SecureRandom;
+use Symfony\Component\Intl\Intl;
 
 /**
  * Customer controller.
