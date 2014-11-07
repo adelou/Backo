@@ -35,7 +35,7 @@ class Catalog
     /**
      * @ORM\ManyToOne(targetEntity="App\LanguageBundle\Entity\Country", inversedBy="catalogs")
      */
-    private $country;
+    /*private $country;*/
 
     /**
      * @var string
@@ -163,20 +163,20 @@ class Catalog
      * @param \App\LanguageBundle\Entity\Country $country
      * @return Catalog
      */
-    public function setCountry(\App\LanguageBundle\Entity\Country $country = null)
+   /* public function setCountry(\App\LanguageBundle\Entity\Country $country = null)
     {
         $this->country = $country;
 
         return $this;
-    }
+    }*/
 
     /**
      * Get country
      *
      * @return \App\ECommerceBundle\Entity\Country 
      */
-    public function getCountry()
+    /*public function getCountry()
     {
         return $this->country;
-    }
+    }*/
 }

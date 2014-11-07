@@ -23,14 +23,6 @@ class Supplier extends AbstractDefault
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\ECommerceBundle\Entity\Product\Product", inversedBy="supplier", cascade={"persist"})
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
-    private $supplier;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -78,36 +70,5 @@ class Supplier extends AbstractDefault
         $this->supplier = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * Add supplier
-     *
-     * @param \App\ECommerceBundle\Entity\Product\Product $supplier
-     * @return Supplier
-     */
-    public function addSupplier(\App\ECommerceBundle\Entity\Product\Product $supplier)
-    {
-        $this->supplier[] = $supplier;
 
-        return $this;
-    }
-
-    /**
-     * Remove supplier
-     *
-     * @param \App\ECommerceBundle\Entity\Product\Product $supplier
-     */
-    public function removeSupplier(\App\ECommerceBundle\Entity\Product\Product $supplier)
-    {
-        $this->supplier->removeElement($supplier);
-    }
-
-    /**
-     * Get supplier
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getSupplier()
-    {
-        return $this->supplier;
-    }
 }

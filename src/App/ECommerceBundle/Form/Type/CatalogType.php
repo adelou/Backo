@@ -44,7 +44,7 @@ class CatalogType extends AbstractType
 //            )    
                 
             ->add('customers')
-            ->add('country')
+            /*->add('country')*/
         ;
         
     }
