@@ -18,7 +18,7 @@
                     </select>
                 </div>
 
-                <img width="{{ iImageWith }}" src="/uploads/medias/{{ asset( media_path ~ entity.path ) }}" id="target" /><br>
+                <img width="{{ iImageWith }}" src="{{ media_dir }}{{ asset( media_path ~ entity.path ) }}" id="target" /><br>
                 <a id="btn-to-sub" class="btn btn-success" onclick="crop();">Cropper votre image</a>
             </div>
          </section>
@@ -46,14 +46,14 @@
                        <td>{{ format.slug }}</td>
                        <td>{{ format.width }}px</td>
                        <td>{{ format.height }}px</td>
-                       <td><img src="/uploads/medias{{ asset(media_path ~ format.slug ~ '/'~ entity.path ) }}" /></td>
+                       <td><img src="{{ media_dir }}{{ asset(media_path ~ format.slug ~ '/'~ entity.path ) }}" /></td>
                    </tr>
                {% endfor %}
                    <tr>
                        <td>{{ thumb_slug }}</td>
                        <td>{{ thumb_width }}px</td>
                        <td>{{ thumb_height }}px</td>
-                       <td><img src="/uploads/medias{{ asset(media_path ~ thumb_slug ~ '/'~ entity.path ) }}" /></td>
+                       <td><img src="{{ media_dir }}{{ asset(media_path ~ thumb_slug ~ '/'~ entity.path ) }}" /></td>
                    </tr>
 
                        </tbody>

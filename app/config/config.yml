@@ -144,4 +144,7 @@ jms_security_extra:
     # as controller actions
     method_access_control: { }
 
+app_media:
+    upload_dir: %kernel.root_dir%/../web/uploads/medias/
+    media_dir: /uploads/medias/
     

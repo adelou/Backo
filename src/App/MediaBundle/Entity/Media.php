@@ -2,9 +2,11 @@
 
 namespace App\MediaBundle\Entity;
 
+use App\MediaBundle\Lib\GlobalsMedia;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\AdminBundle\Entity\AbstractDefault;
+use App\MediaBundle\Lib\Globals;
 
 /**
  * Media
@@ -100,9 +102,8 @@ class Media extends AbstractDefault
         if (null === $this->file) {
             return;
         }
-        //si erreur, la donnée ne persiste pas en BDD
 
-        $this->file->move($this->getUploadRootDir(), $this->path);
+        $this->file->move(GlobalsMedia::getUploadDir(), $this->path);
 
         unset($this->file);
 
@@ -113,36 +114,11 @@ class Media extends AbstractDefault
      */
     public function removeUpload()
     {
-        if ($file = $this->getAbsolutePath()) {
+        if ($file = GlobalsMedia::getUploadDir().'/'.$this->path()) {
             unlink($file);
         }
     }
 
-     public function getAbsolutePath()
-    {
-        return null === $this->path ? null : $this->getUploadRootDir().'/'.$this->path;
-    }
-
-    public function getWebPath()
-    {
-        return null === $this->path ? null : $this->getUploadDir().'/'.$this->path;
-    }
-
-    public function getUploadRootDir()
-    {
-        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        //return $this->get('kernel')->getRootDir().'/../web/'.$this->getUploadDir();
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
-    }
-
-    protected function getUploadDir()
-    {
-        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
-        // le document/image dans la vue.
-        return 'uploads/medias';
-    }
-
-    
     /**
      * Get id
      *

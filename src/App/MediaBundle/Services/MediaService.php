@@ -3,6 +3,7 @@ namespace App\MediaBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use App\MediaBundle\Lib\GlobalsMedia;
 
 class MediaService
 {
@@ -17,12 +18,14 @@ class MediaService
     }
 
     public function getCrop($parameters) {
-        $parameters['src'] = $this->_container->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $parameters['path'];
-        $parameters['destcrop'] = $this->_container->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $parameters['slug'] .'/'.$parameters['path'];
+
+        $parameters['src'] = GlobalsMedia::getUploadDir() . $parameters['path'];
+        $parameters['destcrop'] = GlobalsMedia::getUploadDir() . $parameters['slug'] .'/'.$parameters['path'];
+
         $filesystem = new Filesystem();
-        if($filesystem->exists( $this->_container->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $parameters['slug']) === false) {
+        if($filesystem->exists(GlobalsMedia::getUploadDir() . $parameters['slug']) === false) {
             try {
-                $filesystem->mkdir($this->_container->get('kernel')->getRootDir() . '/../web/uploads/medias/' . $parameters['slug'], 0700);
+                $filesystem->mkdir(GlobalsMedia::getUploadDir() . $parameters['slug'], 0700);
             } catch (IOException $e) {
                 echo "An error occured while creating your directory";
             }

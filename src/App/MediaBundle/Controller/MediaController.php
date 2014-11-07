@@ -12,6 +12,7 @@ use App\MediaBundle\Form\Type\MediaType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use App\MediaBundle\Lib\GlobalsMedia;
 
 /**
  * Media controller.
@@ -88,23 +89,6 @@ class MediaController extends Controller
         $request = $this->get('request');
         $output = null;
 
-        $filesystem = new Filesystem();
-        //var_dump($this->get('kernel')->getRootDir() . '/../web/uploads/medias');die;
-        if($filesystem->exists($this->get('kernel')->getRootDir() . '/../web/uploads') === false) {
-            try {
-                $filesystem->mkdir($this->get('kernel')->getRootDir() . '/../web/uploads', 0700);
-            } catch (IOException $e) {
-                echo "An error occured while creating your directory";
-            }
-        }
-        if($filesystem->exists($this->get('kernel')->getRootDir() . '/../web/uploads/medias') === false) {
-            try {
-                $filesystem->mkdir($this->get('kernel')->getRootDir() . '/../web/uploads/medias', 0700);
-            } catch (IOException $e) {
-                echo "An error occured while creating your directory";
-            }
-        }
-
         $files = $request->files;
 
         $media = new Media();
@@ -114,7 +98,7 @@ class MediaController extends Controller
         }
         $em->flush();
 
-        $src = $media->getAbsolutePath();
+        $src = GlobalsMedia::getUploadDir().$media->getPath();
         $extension = $media->getExtension();
         $aDataImageOrigin = getimagesize($src);
         if (strpos($aDataImageOrigin['mime'],'image') !== false) {
@@ -134,15 +118,15 @@ class MediaController extends Controller
                 'extension' => $extension,  'ajax' => false, 'path' => $media->getPath()
             );
 
-            $src = $this->container->get('app.media.services.media')->getCrop($parameters);
+            $this->container->get('app.media.services.media')->getCrop($parameters);
         }
 
         $response = new JsonResponse();
         $response->setData(array(
             'id' => $media->getId(),
-            'img' => "<img src='/uploads/medias/thumb/".$media->getPath()."' title='".$media->getName()."'/>",
+            'img' => "<img src='".GlobalsMedia::getMediaDir()."thumb/".$media->getPath()."' title='".$media->getName()."'/>",
             'name' => $media->getName(),
-            'type' => $media->getType()
+            'type' => $media->getType(),
         ));
 
         return $response;
@@ -192,7 +176,7 @@ class MediaController extends Controller
      *
      * @Route("/{id}/edit", name="media_edit")
      * @Method("GET")
-     * @Template()
+     * @Template("AppMediaBundle:Media:crop.html.twig")
      */
     public function editAction($id)
     {
@@ -208,9 +192,8 @@ class MediaController extends Controller
         $deleteForm = $this->createDeleteForm($id);
             
         $formats = $em->getRepository('AppMediaBundle:Croping')->findAll();
-        
-        // Recuperation des metadonnées de l'image.
-        $filename = 'uploads/medias/'.$entity->getPath();
+
+        $filename = GlobalsMedia::getUploadDir().$entity->getPath();
         
         $aDataImageOrigin = getimagesize($filename);
         
@@ -231,6 +214,7 @@ class MediaController extends Controller
             'formats'     => $formats,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'media_dir' => GlobalsMedia::getMediaDir()
         );
     }
 

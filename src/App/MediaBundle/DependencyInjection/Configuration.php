@@ -18,11 +18,18 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        //$rootNode = $treeBuilder->root('app_media');
+        $rootNode = $treeBuilder->root('app_media');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->scalarNode('upload_dir')
+                    ->defaultValue('/uploads/medias') // or whatever default value
+                ->end()
+                ->scalarNode('media_dir')
+                    ->defaultValue('/uploads/medias') // or whatever default value
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }
