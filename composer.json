@@ -24,7 +24,7 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "stof/doctrine-extensions-bundle": "~1.1@dev",
         "symfony/icu": "1.*",
-        "jms/security-extra-bundle": "dev-master"
+        "jms/security-extra-bundle": "1.5.*"
 
     },
     "scripts": {

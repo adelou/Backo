@@ -40,4 +40,4 @@ class MediaExtension extends \Twig_Extension
         return 'media_extension';
     }
 
-} 
+}

@@ -30,4 +30,4 @@ class PageRepository extends EntityRepository {
         return $total;
     }
 
-} 
+}

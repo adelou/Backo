@@ -183,5 +183,4 @@ class Category
         return $this->root;
     }
 
-
 }

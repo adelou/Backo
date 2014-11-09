@@ -28,4 +28,4 @@ class GlobalsMedia {
         return self::$mediaDir;
     }
 
-} 
+}

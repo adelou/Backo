@@ -193,7 +193,4 @@ class FileManager
         return $this->root;
     }
 
-
-
-
 }

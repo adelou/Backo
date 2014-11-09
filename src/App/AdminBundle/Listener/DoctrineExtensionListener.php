@@ -33,4 +33,5 @@ class DoctrineExtensionListener implements ContainerAwareInterface
             $loggable->setUsername($securityContext->getToken()->getUsername());
         }
     }
+
 }

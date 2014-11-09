@@ -130,4 +130,4 @@ class AdminExtension extends \Twig_Extension
         return 'admin_extension';
     }
 
-} 
+}

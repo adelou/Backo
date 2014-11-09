@@ -26,5 +26,4 @@ class ArticleRepository extends EntityRepository {
         return $total;
     }
 
-
-} 
+}

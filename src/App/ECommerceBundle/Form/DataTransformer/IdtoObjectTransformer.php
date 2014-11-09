@@ -58,4 +58,5 @@ class IdtoObjectTransformer implements DataTransformerInterface
 
         return $aArrayCollection;
     }
+
 }

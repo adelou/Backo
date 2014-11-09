@@ -53,4 +53,5 @@ class ObjecttoCollectionTransformer implements DataTransformerInterface
 
         return $array;
     }
+
 }

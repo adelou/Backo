@@ -59,4 +59,4 @@ class LanguageExtension extends \Twig_Extension
         return 'language_extension';
     }
 
-} 
+}
