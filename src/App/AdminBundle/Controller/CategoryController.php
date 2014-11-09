@@ -30,12 +30,6 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('AppAdminBundle:Category')->findAll();
-        if(empty($entities)) {
-            $root = new Category();
-            $root->setTitle('root');
-            $em->persist($root);
-            $em->flush();
-        }
         $htmlTree = $em->getRepository('AppAdminBundle:Category')->childrenHierarchy(
             null, /* starting from root nodes */
             false, /* true: load all children, false: only direct */
