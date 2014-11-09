@@ -333,6 +333,7 @@ class MediaController extends Controller
      * Delete langue entity.
      *
      * @Route("/deletemedia/{id}", name="delete_media_datatable")
+     * @Method("GET")
      */
     public function deleteMediaAction($id)
     {
@@ -355,6 +356,7 @@ class MediaController extends Controller
      * Fonctionne avec le bouton de l'interface Product:new
      *
      * @Route("/formupdate", name="form_media_update")
+     * @Method("GET")
      * @Template()
      */
     public function addMediaFromUpdateAction()

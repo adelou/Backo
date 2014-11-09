@@ -244,6 +244,7 @@ class CropingController extends Controller
      * Check if duplication between croping name.
      *
      * @Route("/check_crop_duplication/{$sCropingName}/", name="check_crop_duplication")
+     * @Method("GET")
      */
     public function cropFormatIsDuplicateAction($sCropingName)
     {
