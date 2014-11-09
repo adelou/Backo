@@ -29,7 +29,6 @@ class CategoryController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('AppAdminBundle:Category')->findAll();
         $htmlTree = $em->getRepository('AppAdminBundle:Category')->childrenHierarchy(
             null, /* starting from root nodes */
             false, /* true: load all children, false: only direct */
