@@ -78,3 +78,18 @@ function deleteModal(location, content){
         document.location.href= location;
     });
 }
+
+function dangerModal(location, textHeader, textBody, textButton){
+    $("#dangerModal").modal();
+    $("#dangerModal .modal-header").html(textHeader);
+    $("#dangerModal .modal-body").html(textBody);
+    $("#dangerModal .modal-body").html(textBody);
+    $("#dangerModal .modal-footer .btn-danger").html(textButton);
+    $("#dangerModal .modal-footer .btn-danger").on('click', function(){
+        document.location.href= location;
+    });
+}
+
+function addMediasModal(){
+    $("#addMediasModal").modal();
+}
