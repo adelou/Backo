@@ -2,23 +2,19 @@
 
 namespace App\ECommerceBundle\Form\DataTransformer;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class ObjecttoCollectionTransformer implements DataTransformerInterface
 {
-    /**
-     * @var Container
-     */
-    private $container;
 
-    /**
-     * @param Container $container
-     */
-    public function __construct(ContainerInterface $container)
+
+    private $securityContext;
+
+    public function __construct(SecurityContextInterface $securityContext)
     {
-        $this->container = $container;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -46,7 +42,7 @@ class ObjecttoCollectionTransformer implements DataTransformerInterface
     public function reverseTransform($object)
     {
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user = $this->securityContext->getToken()->getUser();
         $object->setUser($user);
         $array = new \Doctrine\Common\Collections\ArrayCollection();
         $array->add($object);

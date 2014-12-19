@@ -11,18 +11,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class TicketType extends AbstractType
 {
 
-    /**
-     * @var Container
-     */
-    private $container;
-
-    /**
-     * @param Container $container
-     */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
         /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -30,7 +18,8 @@ class TicketType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $transformer = new ObjecttoCollectionTransformer($this->container);
+        $context = $options['context'];
+        $transformer = new ObjecttoCollectionTransformer($context);
 
         $builder
             ->add('email')
@@ -60,6 +49,12 @@ class TicketType extends AbstractType
             'data_class' => 'App\ECommerceBundle\Entity\SAV\Ticket',
             'cascade_validation' => true,
 
+        ));
+        $resolver->setRequired(array(
+            'context',
+        ));
+        $resolver->setAllowedTypes(array(
+            'context' => 'Symfony\Component\Security\Core\SecurityContextInterface',
         ));
     }
 

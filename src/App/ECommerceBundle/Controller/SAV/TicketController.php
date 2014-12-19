@@ -36,7 +36,7 @@ class TicketController extends Controller
 
             /* DataTable Parameters*/
             $parameters['sortCol'] = $request->get('iSortCol_0');
-            $parameters['sortDir'] = $request->get('iSortDir_0');
+            $parameters['sortDir'] = $request->get('sSortDir_0');
             $parameters['filters'] = $request->get('filters');
             $parameters['start'] = $request->get('iDisplayStart');
             $parameters['limit'] = $request->get('iDisplayLength');
@@ -80,15 +80,7 @@ class TicketController extends Controller
                 $row[] = '-';
                 $row[] = '-';
             }
-            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("ticket_new_message", array('id' => $e->getId())).'"><i class="fa fa-edit"></i></a>
-                          <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o"></i></a>';$row = array();
-            $row[] = (string) $e->getId();
-            $row[] = (string) $e->getPosition();
-            $languages = Intl::getLanguageBundle()->getLanguageNames($parameters['lang']);
-            (array_key_exists($e->getIsoCode(), $languages)) ? $row[] = (string) $languages[$e->getIsoCode()] : $row[] = "";
-            $row[] = (string) $e->getIsoCode();
-            ($e->getEnabled()==0) ? $row[] = '<span class="label label-danger label-mini"><i class="fa fa-times"></i></span>' : $row[] = '<span class="label label-success label-mini"><i class="fa fa-check"></i></span>';
-            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("language_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
+            $row[] = '<a class="btn btn-primary btn-sm" href="'.$this->generateUrl("ticket_edit", array('id' => $e->getId())).'"><i class="fa fa-pencil"></i></a>
                           <a class="btn btn-danger btn-sm" onclick="confirmbox()"><i class="fa fa-trash-o "></i></a>';
             $data['output']['aaData'][] = $row ;
         }
@@ -145,6 +137,7 @@ class TicketController extends Controller
         $form = $this->createForm(new TicketType($this->container), $entity, array(
             'action' => $this->generateUrl('ticket_create'),
             'method' => 'POST',
+            'context' => $this->get('security.context')
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
@@ -234,7 +227,7 @@ class TicketController extends Controller
         $form = $this->createForm(new TicketType(), $entity, array(
             'action' => $this->generateUrl('ticket_update', array('id' => $entity->getId())),
             'method' => 'PUT',
-            'em' => $this->getDoctrine()->getManager()
+            'context' => $this->get('security.context')
         ));
 
         $form->add('submit', 'submit', array('label' => 'Update'));
