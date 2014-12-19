@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\ECommerceBundle\Entity\SAV\Message;
 use App\ECommerceBundle\Form\Type\SAV\MessageType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Message controller.
@@ -103,30 +104,7 @@ class MessageController extends Controller
         );
     }
 
-    /**
-     * Finds and displays a Message entity.
-     *
-     * @Route("/{id}", name="message_show")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppECommerceBundle:SAV\Message')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Message entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
 
     /**
      * Displays a form to edit an existing Message entity.
@@ -247,5 +225,38 @@ class MessageController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    /**
+     * Finds and displays a Message entity.
+     *
+     * @Route("/getMessageAjax", name="get_message_ajax")
+     * @Method("POST")
+     * @Template()
+     */
+    public function getMessageAjaxAction(Request $request)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+
+            $id = $request->request->get('id');
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('AppECommerceBundle:SAV\Message')->find($id);
+
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find Message entity.');
+            }
+
+            $aaData = array();
+            $aaData['id'] = $entity->getId();
+            $aaData['email'] = $entity->getUser()->getEmail();
+            $aaData['created_at'] = 'le ' . $entity->getCreatedAt()->format('d/M/Y') . ' à ' . $entity->getCreatedAt()->format('H:i');
+            $aaData['content'] = $entity->getContent();
+
+            $response = new JsonResponse();
+            $response->setData($aaData);
+
+            return $response;
+        }
     }
 }
